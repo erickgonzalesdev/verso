@@ -50,7 +50,9 @@ verso/
 </header>
 ```
 
-Body copy needs almost no classes — concrete styles `main`, `section`, `p`, `blockquote`, `figure`, etc.
+Body copy needs almost no classes — concrete styles `main`, `section`, `p`, etc.
+For imagery: **plate rhythm** — every image is a `section.passage` that cycles
+inset → float right → float left (see sample article and `AGENTS.md`).
 
 ## Colour
 

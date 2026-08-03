@@ -6,7 +6,7 @@
     <title>Episode : 01 — Angel Attack · Verso</title>
     <meta
       name="description"
-      content="Sample article: Evangelion-inspired title card over a concrete.css reading measure."
+      content="Sample article: plate rhythm — inset, float right, float left, repeat."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,7 +37,6 @@
         <span>Genesis</span>
         <span>Evangelion</span>
       </p>
-      <!-- Visible title for AT; series mark is decorative homage in the sample -->
       <h1 class="sr-only">Angel Attack</h1>
       <div class="title-card__meta">
         <p class="title-card__episode">Episode&nbsp;: 1</p>
@@ -48,72 +47,207 @@
     <main class="shell article-body">
       <p class="byline">Issue 01 · Sample · 12 min</p>
 
-      <p>
-        The title card is the whole point of opening a piece. Black field,
-        stacked series mark, episode number hard left, title hard right — the
-        same grammar as the card that opens
-        <em>Neon Genesis Evangelion</em>. Everything after that is just reading.
+      <p class="standfirst">
+        Every image is a passage. Passages cycle on their own: inset, float
+        right, float left — then the loop starts again. Constant structure,
+        varying frames.
+      </p>
+
+      <p class="lede">
+        The title card opens the piece. After that, body copy and pictures share
+        one rhythm so no article invents its own layout language. You only write
+        <code>&lt;section class="passage"&gt;</code> around each plate; CSS picks
+        the beat from order.
       </p>
 
       <p>
-        Body copy rides on
-        <a href="https://github.com/louismerlin/concrete.css">concrete.css</a>:
-        no utility classes, a fixed measure, Helvetica, square list markers, and
-        automatic dark mode from the OS. You write ordinary HTML —
-        <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>,
-        <code>&lt;figure&gt;</code> — and the base stylesheet does the rest.
+        Intervening paragraphs and headings do not reset the count — only
+        <code>section</code> elements do. Put text that should wrap a float
+        inside <code>.passage__body</code> next to the figure.
       </p>
 
       <blockquote class="pull">
-        Structure comes from the size of the type and the silence around it, not
-        from hairlines or uppercase chrome in the margins.
+        Inset → float right → float left → repeat. Same bones every issue.
+        <cite>Plate rhythm</cite>
       </blockquote>
 
+      <!-- ── Cycle 1, beat 1: inset ─────────────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="plate__frame" style="aspect-ratio: 3 / 2">
+            <img
+              src="https://picsum.photos/seed/verso-a1/1200/800"
+              alt="Inset plate placeholder"
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>
+            Passage 1 · inset
+            <span class="credit">Full measure block</span>
+          </figcaption>
+        </figure>
+      </section>
+
       <p>
-        Hermes enters as structure, not as a colour. Centered wordmark, mono
-        eyebrows with wide tracking, open feature blocks, monumental display —
-        the same grammar as the Hermes site, drawn in black and white so the
-        title card and the page share one field.
+        After an inset, ordinary copy continues in the measure. The next
+        <code>section.passage</code> will float right — no extra classes
+        required.
       </p>
 
-      <h2>How to write a card</h2>
+      <!-- ── Cycle 1, beat 2: float right ──────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="slot slot--portrait" aria-hidden="true">2:3</div>
+          <figcaption>Passage 2 · float right</figcaption>
+        </figure>
+        <div class="passage__body">
+          <p>
+            Text in <code>passage__body</code> wraps the plate on wide screens.
+            On small screens the plate stacks full-width above the copy. Empty
+            slots are valid — ship the layout before the scan lands.
+          </p>
+          <p>
+            Keep float bodies short enough that the wrap still reads; if the
+            note is long, use an inset beat instead.
+          </p>
+        </div>
+      </section>
+
+      <h2>How the cycle works</h2>
 
       <p>
-        A title card is one block with three parts. Keep the series mark short
-        enough to stack (three lines works; four is possible). Episode labels
-        stay in mono and uppercase. The episode title sits opposite, flush
-        right, same display face as the series.
+        Among siblings of <code>main.article-body</code>, every
+        <code>section.passage</code> is numbered 1, 2, 3… by CSS
+        <code>:nth-of-type</code>:
       </p>
-
-      <pre><code>&lt;header class="title-card"&gt;
-  &lt;p class="title-card__series"&gt;
-    &lt;span&gt;Your&lt;/span&gt;
-    &lt;span&gt;Series&lt;/span&gt;
-    &lt;span&gt;Name&lt;/span&gt;
-  &lt;/p&gt;
-  &lt;div class="title-card__meta"&gt;
-    &lt;p class="title-card__episode"&gt;Episode&nbsp;: 2&lt;/p&gt;
-    &lt;p class="title-card__title"&gt;The Beast&lt;/p&gt;
-  &lt;/div&gt;
-&lt;/header&gt;</code></pre>
-
-      <h2>What not to add</h2>
 
       <ul>
-        <li>Utility frameworks on top of concrete — you will fight the measure.</li>
-        <li>Extra colour tokens scattered in components — keep them in <code>theme.css</code>.</li>
-        <li>A third “setting” before you have two real issues shipped.</li>
+        <li><strong>1, 4, 7…</strong> — inset (block, full measure)</li>
+        <li><strong>2, 5, 8…</strong> — float right</li>
+        <li><strong>3, 6, 9…</strong> — float left</li>
       </ul>
 
-      <p id="placeholder">
-        This paragraph is the stub target linked from the issue index. Replace
-        this file, or duplicate it, when you add real pieces. The feed on the
-        home page is ordinary list markup with a little theme CSS — no build
-        step required.
-      </p>
+      <!-- ── Cycle 1, beat 3: float left ───────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="plate__frame" style="aspect-ratio: 1 / 1">
+            <img
+              src="https://picsum.photos/seed/verso-a3/800/800"
+              alt="Float left placeholder"
+              width="800"
+              height="800"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>Passage 3 · float left</figcaption>
+        </figure>
+        <div class="passage__body">
+          <p>
+            Third passage of the cycle. After this, the next section is inset
+            again — the loop is the whole framework.
+          </p>
+        </div>
+      </section>
+
+      <h2>Second cycle</h2>
 
       <p>
+        Same markup, new pictures. The framework does not care what the frames
+        show — only their order.
+      </p>
+
+      <!-- ── Cycle 2, beat 1: inset ─────────────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="slot slot--wide" aria-hidden="true">16:9 · staged</div>
+          <figcaption>
+            Passage 4 · inset again
+            <span class="credit">Empty slot is fine</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ── Cycle 2, beat 2: float right ──────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="plate__frame" style="aspect-ratio: 2 / 3">
+            <img
+              src="https://picsum.photos/seed/verso-a5/600/900"
+              alt=""
+              width="600"
+              height="900"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>Passage 5 · float right</figcaption>
+        </figure>
+        <div class="passage__body">
+          <p>
+            Second float-right of the piece. Vary crop and content; keep the
+            skeleton identical.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Cycle 2, beat 3: float left ───────────────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="slot slot--square" aria-hidden="true">1:1</div>
+          <figcaption>Passage 6 · float left</figcaption>
+        </figure>
+        <div class="passage__body">
+          <p>
+            End of the second cycle. Add more passages as the piece needs; they
+            keep stepping through the same three beats.
+          </p>
+        </div>
+      </section>
+
+      <h2>Escapes</h2>
+
+      <p>
+        When the rhythm must break, say so on the section:
+        <code>passage--inset</code>, <code>passage--float-right</code>,
+        <code>passage--float-left</code>. For a wider block that stays out of
+        the float cycle, use <code>passage--span</code> or
+        <code>passage--fill</code> (always block). Equal text/image columns use
+        <code>.pair</code> outside the passage sequence.
+      </p>
+
+      <section class="passage passage--span">
+        <figure class="plate">
+          <div class="slot slot--wide" aria-hidden="true">span escape</div>
+          <figcaption>
+            Explicit span · does not float
+            <span class="credit">Still counts as a section in the cycle</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <p>
+        Note: a span escape is still a <code>section</code>, so it advances the
+        nth-of-type counter. Prefer keeping escapes rare, or place them with
+        awareness of the next beat.
+      </p>
+
+      <pre><code>&lt;section class="passage"&gt;
+  &lt;figure class="plate"&gt;
+    &lt;div class="plate__frame" style="aspect-ratio: 3 / 2"&gt;
+      &lt;img src="…" alt="…" /&gt;
+    &lt;/div&gt;
+    &lt;figcaption&gt;Caption&lt;/figcaption&gt;
+  &lt;/figure&gt;
+  &lt;!-- float beats: optional wrapping copy --&gt;
+  &lt;div class="passage__body"&gt;
+    &lt;p&gt;…&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+      <p id="placeholder" class="endnote">
         <a href="../index.html">← Back to the issue</a>
+        · Episode : 01 · plate rhythm
       </p>
     </main>
 
