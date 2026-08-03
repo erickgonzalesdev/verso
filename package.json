@@ -1,0 +1,11 @@
+{
+  "name": "verso",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Webzine starter: concrete.css + Evangelion title cards + Hermes accents",
+  "scripts": {
+    "dev": "npx --yes serve -l 4173 .",
+    "start": "npx --yes serve -l 4173 ."
+  },
+  "license": "MIT"
+}

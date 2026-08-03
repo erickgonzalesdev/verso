@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About · Verso</title>
+    <meta name="description" content="Colophon and design notes for the Verso webzine starter." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Courier+Prime:wght@400;700&family=Instrument+Serif&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/concrete.min.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+  </head>
+  <body class="site">
+    <div class="shell">
+      <header class="masthead">
+        <a class="mark" href="index.html">Verso</a>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Issues</a></li>
+            <li><a href="articles/angel-attack.html">Sample</a></li>
+            <li><a href="about.html" aria-current="page">About</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <div class="title-card title-card--compact">
+      <p class="title-card__series">
+        <span>About</span>
+        <span>This</span>
+        <span>Template</span>
+      </p>
+      <div class="title-card__meta">
+        <p class="title-card__episode">Colophon</p>
+        <p class="title-card__title">Verso</p>
+      </div>
+    </div>
+
+    <main class="shell article-body">
+      <p class="byline">Design notes · No build step</p>
+
+      <p>
+        <strong>Verso</strong> is a static webzine starter sitting next to
+        RECTO. Where RECTO is an Astro theme with tokens and two settings, Verso
+        is the opposite edge of the page: classless HTML, one measure, and a
+        title card you can paste.
+      </p>
+
+      <h2>Stack</h2>
+      <ul>
+        <li>
+          <a href="https://github.com/louismerlin/concrete.css">concrete.css</a>
+          3.1 — classless base (vendored in <code>css/concrete.min.css</code>)
+        </li>
+        <li><code>css/theme.css</code> — title cards, feed, features, black field</li>
+        <li>
+          <a href="https://fonts.google.com/specimen/Instrument+Serif">Instrument Serif</a>
+          — title cards, in-article headings, pull quotes
+        </li>
+        <li>
+          <a href="https://fonts.google.com/specimen/Courier+Prime">Courier Prime</a>
+          — article body (same face Hermes uses for descriptive copy)
+        </li>
+        <li>
+          <a href="https://fonts.google.com/specimen/JetBrains+Mono">JetBrains Mono</a>
+          — episode labels, nav, kickers, code
+        </li>
+      </ul>
+
+      <h2>References</h2>
+      <ul>
+        <li>
+          Neon Genesis Evangelion title cards (series mark stacked; episode left;
+          title right on black)
+        </li>
+        <li>
+          <a href="https://hermes-agent.nousresearch.com/">Hermes Agent</a>
+          — centered mark, uppercase mono eyebrows, monumental display, open
+          sections (structure only; field stays black)
+        </li>
+      </ul>
+
+      <h2>Colour</h2>
+      <p>
+        One field: pure black (<code>#000</code>) and near-white type
+        (<code>#f5f5f5</code>). No blue accent, no gray bands between masthead
+        and title card. Tokens live at the top of <code>theme.css</code>.
+      </p>
+
+      <h2>Run locally</h2>
+      <pre><code>cd verso
+npm install
+npm run dev
+# → http://localhost:4173</code></pre>
+      <p>Or any static server pointed at this directory.</p>
+
+      <p><a href="index.html">← Home</a></p>
+    </main>
+
+    <footer class="shell site-footer">
+      <p>Verso · colophon</p>
+    </footer>
+  </body>
+</html>

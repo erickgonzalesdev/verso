@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Episode : 01 — Angel Attack · Verso</title>
+    <meta
+      name="description"
+      content="Sample article: Evangelion-inspired title card over a concrete.css reading measure."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Courier+Prime:wght@400;700&family=Instrument+Serif&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/concrete.min.css" />
+    <link rel="stylesheet" href="../css/theme.css" />
+  </head>
+  <body class="site">
+    <div class="shell">
+      <header class="masthead">
+        <a class="mark" href="../index.html">Verso</a>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="../index.html">Issues</a></li>
+            <li><a href="angel-attack.html" aria-current="page">Sample</a></li>
+            <li><a href="../about.html">About</a></li>
+          </ul>
+        </nav>
+      </header>
+    </div>
+
+    <header class="title-card">
+      <p class="title-card__series" aria-hidden="true">
+        <span>Neon</span>
+        <span>Genesis</span>
+        <span>Evangelion</span>
+      </p>
+      <!-- Visible title for AT; series mark is decorative homage in the sample -->
+      <h1 class="sr-only">Angel Attack</h1>
+      <div class="title-card__meta">
+        <p class="title-card__episode">Episode&nbsp;: 1</p>
+        <p class="title-card__title">Angel Attack</p>
+      </div>
+    </header>
+
+    <main class="shell article-body">
+      <p class="byline">Issue 01 · Sample · 12 min</p>
+
+      <p>
+        The title card is the whole point of opening a piece. Black field,
+        stacked series mark, episode number hard left, title hard right — the
+        same grammar as the card that opens
+        <em>Neon Genesis Evangelion</em>. Everything after that is just reading.
+      </p>
+
+      <p>
+        Body copy rides on
+        <a href="https://github.com/louismerlin/concrete.css">concrete.css</a>:
+        no utility classes, a fixed measure, Helvetica, square list markers, and
+        automatic dark mode from the OS. You write ordinary HTML —
+        <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>,
+        <code>&lt;figure&gt;</code> — and the base stylesheet does the rest.
+      </p>
+
+      <blockquote class="pull">
+        Structure comes from the size of the type and the silence around it, not
+        from hairlines or uppercase chrome in the margins.
+      </blockquote>
+
+      <p>
+        Hermes enters as structure, not as a colour. Centered wordmark, mono
+        eyebrows with wide tracking, open feature blocks, monumental display —
+        the same grammar as the Hermes site, drawn in black and white so the
+        title card and the page share one field.
+      </p>
+
+      <h2>How to write a card</h2>
+
+      <p>
+        A title card is one block with three parts. Keep the series mark short
+        enough to stack (three lines works; four is possible). Episode labels
+        stay in mono and uppercase. The episode title sits opposite, flush
+        right, same display face as the series.
+      </p>
+
+      <pre><code>&lt;header class="title-card"&gt;
+  &lt;p class="title-card__series"&gt;
+    &lt;span&gt;Your&lt;/span&gt;
+    &lt;span&gt;Series&lt;/span&gt;
+    &lt;span&gt;Name&lt;/span&gt;
+  &lt;/p&gt;
+  &lt;div class="title-card__meta"&gt;
+    &lt;p class="title-card__episode"&gt;Episode&nbsp;: 2&lt;/p&gt;
+    &lt;p class="title-card__title"&gt;The Beast&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+
+      <h2>What not to add</h2>
+
+      <ul>
+        <li>Utility frameworks on top of concrete — you will fight the measure.</li>
+        <li>Extra colour tokens scattered in components — keep them in <code>theme.css</code>.</li>
+        <li>A third “setting” before you have two real issues shipped.</li>
+      </ul>
+
+      <p id="placeholder">
+        This paragraph is the stub target linked from the issue index. Replace
+        this file, or duplicate it, when you add real pieces. The feed on the
+        home page is ordinary list markup with a little theme CSS — no build
+        step required.
+      </p>
+
+      <p>
+        <a href="../index.html">← Back to the issue</a>
+      </p>
+    </main>
+
+    <footer class="shell site-footer">
+      <p>Verso — Episode : 01</p>
+      <p><a href="../index.html">All episodes</a></p>
+    </footer>
+  </body>
+</html>
