@@ -23,8 +23,8 @@
   /* Poster display = same Instrument Serif (no separate face) */
   --font-poster: var(--font-display);
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
-  /* Article prose — IBM Plex Mono */
-  --font-body: "IBM Plex Mono", "Courier New", Courier, monospace;
+  /* Article prose — Space Grotesk */
+  --font-body: "Space Grotesk", system-ui, sans-serif;
 
   --track-tight: 0.03em;
   --track-wide: 0.14em;

@@ -17,7 +17,7 @@ but deliberately lighter: no build, no components framework, classless HTML.
 | Base | concrete.css | Measure ~640px, classless prose, semantic elements |
 | Open titles | Neon Genesis Evangelion title cards | Stacked series mark, `EPISODE : n` left, title right, monumental type |
 | Chrome | [Hermes Agent](https://hermes-agent.nousresearch.com/) | Centered wordmark nav, mono eyebrows, open feature blocks — **not** their blue |
-| Body type | Mono prose | **IBM Plex Mono** for article reading |
+| Body type | Sans prose | **Space Grotesk** for article reading |
 | Article field | Editorial / print posters | Frame, corner marks, top/footer rails, hairline breaks — calm, one column |
 
 ## Colour
@@ -32,10 +32,10 @@ but deliberately lighter: no build, no components framework, classless HTML.
 | Role | Face |
 | --- | --- |
 | Open title cards, standfirst, `h2`/`h1`, pulls, plate titles | **Instrument Serif** (`--font-display`) |
-| Article body prose | **IBM Plex Mono** (`--font-body`) |
+| Article body prose | **Space Grotesk** (`--font-body`) |
 | Nav, kickers, bylines, rails, captions, code, `h4` | **JetBrains Mono** (`--font-mono`) |
 
-Fonts load from Google Fonts in each HTML `<head>` (Instrument Serif, IBM Plex Mono, JetBrains Mono). Keep faces in sync across pages when adding a new HTML file.
+Fonts load from Google Fonts in each HTML `<head>` (Instrument Serif, Space Grotesk, JetBrains Mono). Keep faces in sync across pages when adding a new HTML file.
 
 ## Title card pattern (episode open)
 
@@ -137,7 +137,7 @@ Do **not** invent asymmetric “poster bands,” multi-column spec grids, or typ
 2. **Tokens in `theme.css` only.** Don’t scatter colours or typefaces into HTML `style=` attributes (aspect-ratio on crop frames is fine).
 3. **Stay monochrome.** Hover is underline, opacity, or invert — do not reintroduce Hermes blue unless the issue explicitly asks.
 4. **Don’t fight concrete.** Prefer semantic HTML; override only where title cards or the black field require it.
-5. **Three type roles.** Instrument Serif = display; IBM Plex Mono = reading; JetBrains = chrome/rails.
+5. **Three type roles.** Instrument Serif = display; Space Grotesk = reading; JetBrains = chrome/rails.
 6. **Article = long poster, low noise.** Frame + corner marks + top/footer rails + hairline `<hr>` breaks. One measure, shared left edge.
 7. **Plate rhythm is universal.** Every article uses `section.passage` in order; do not invent per-piece image layouts.
 8. **No remark/rehype/Astro unless the project graduates.** This starter is a folder you can ship.
@@ -245,7 +245,7 @@ Check:
 - Article frame + four corner marks + top/footer rails
 - Hairline breaks between major sections
 - Article display centered (standfirst, h2, pulls, plate captions); body left
-- Type roles: IBM Plex Mono body, Instrument Serif display, JetBrains chrome
+- Type roles: Space Grotesk body, Instrument Serif display, JetBrains chrome
 - Passage 1 inset, 2 float-right, 3 float-left, 4 inset again
 - Float beats: prose wraps under the plate (no tall empty gap)
 - Freeform stages do not crop transparent/irregular PNGs
