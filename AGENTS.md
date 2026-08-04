@@ -121,11 +121,12 @@ When the user asks to change article type or layout, **leave the open title card
 
 | Class | Role |
 | --- | --- |
-| `.byline` | Mono meta under the top rail |
-| `.standfirst` | Monumental Instrument title (optional stacked `span`s) |
-| `.lede` | First prose + drop cap |
-| `.pull` | Serif quote, hairlines top/bottom, optional `<cite>` |
-| `h2` | Section display, hairlines top/bottom |
+| `.byline` | Mono meta under the top rail (centered) |
+| `.standfirst` | Monumental Instrument title, centered (optional stacked `span`s) |
+| `.lede` | First prose + drop cap (left) |
+| `.pull` | Centered serif quote, hairlines top/bottom, optional `<cite>` |
+| `h2` | Centered section display, hairlines top/bottom |
+| `.impact` | Optional centered short display line |
 | `.endnote` | Optional mono footer line (prefer footer rail for close) |
 
 Do **not** invent asymmetric “poster bands,” multi-column spec grids, or type-over-image HUDs. Drama is scale + spacing + chrome, not a second layout language.
@@ -207,10 +208,11 @@ Only `<section>` elements count toward the cycle. Ordinary `<p>` / `<h2>` / `<hr
 
 1. Always use `<section class="passage">` for images — bare figures are escapes only.
 2. Prefer `.plate__stage` unless you intentionally need a crop.
-3. Put wrapping copy in `.passage__body` on float beats.
-4. Caption stack: kicker → title → credit; do not invent per-piece caption layouts.
-5. Slots may replace images: `.slot`, `.slot--square`, `.slot--portrait`, `.slot--wide`.
-6. Do not use other `section` elements inside `article-body` unless you intend them to advance the cycle.
+3. Put wrapping copy in `.passage__body` on float beats — enough prose that text wraps **beside and under** the plate (no empty column under a tall float).
+4. **Never** put `display: flow-root` / `overflow: hidden` on `.passage__body` — that blocks wrap-under and leaves whitespace beside floats.
+5. Caption stack: kicker → title → credit (centered); do not invent per-piece caption layouts.
+6. Slots may replace images: `.slot`, `.slot--square`, `.slot--portrait`, `.slot--wide`.
+7. Do not use other `section` elements inside `article-body` unless you intend them to advance the cycle.
 
 **Escapes** (rare)
 
@@ -239,11 +241,13 @@ npm run dev
 Check:
 
 - Pure black field (no gray seam under the masthead)
-- Title card type scale at 375 / 768 / 1280
+- Title card type scale at 375 / 768 / 1280 (Eva layout intact — not centered)
 - Article frame + four corner marks + top/footer rails
 - Hairline breaks between major sections
+- Article display centered (standfirst, h2, pulls, plate captions); body left
 - Type roles: IBM Plex Mono body, Instrument Serif display, JetBrains chrome
 - Passage 1 inset, 2 float-right, 3 float-left, 4 inset again
+- Float beats: prose wraps under the plate (no tall empty gap)
 - Freeform stages do not crop transparent/irregular PNGs
 - Floats stack full-width below ~40rem
 - No horizontal overflow
