@@ -20,9 +20,11 @@
   --font-h: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
 
   --font-display: "Instrument Serif", "Times New Roman", Times, serif;
+  /* Poster display = same Instrument Serif (no separate face) */
+  --font-poster: var(--font-display);
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
-  /* Hermes body face — article prose only */
-  --font-body: "Courier Prime", "Courier New", Courier, monospace;
+  /* Article prose — IBM Plex Mono */
+  --font-body: "IBM Plex Mono", "Courier New", Courier, monospace;
 
   --track-tight: 0.03em;
   --track-wide: 0.14em;
@@ -231,6 +233,75 @@ a:hover {
   padding-block: var(--space-xl);
 }
 
+/*
+ * In-article Eva card — same grammar as the open card (stacked series +
+ * episode left / title right), sized for the reading column / passage body.
+ * Use this for section peaks, pulls, and impact beats — do not fake it with
+ * oversized plain headings.
+ */
+.title-card--inline {
+  min-height: 0;
+  max-width: var(--measure-wide);
+  width: 100%;
+  margin: var(--space-xl) auto;
+  padding: var(--space-lg) 0;
+  justify-content: flex-start;
+}
+
+.title-card--inline > .title-card__series,
+.title-card--inline > .title-card__meta {
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
+}
+
+.title-card--inline .title-card__series {
+  font-size: clamp(2.25rem, 8vw, 4.75rem);
+  margin-bottom: var(--space-lg);
+}
+
+.title-card--inline .title-card__meta {
+  margin-top: 0;
+  padding-top: var(--space-md);
+}
+
+.title-card--inline .title-card__title {
+  font-size: clamp(1.35rem, 3.8vw, 2.35rem);
+}
+
+/* Nested in a float passage: keep the grammar, compress the scale */
+.passage__body > .title-card--inline {
+  margin: 0 0 var(--space-md);
+  padding: 0;
+  max-width: none;
+}
+
+@media (min-width: 40rem) {
+  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__series,
+  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__series,
+  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__series,
+  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__series {
+    font-size: clamp(1.45rem, 2.6vw, 2rem);
+    margin-bottom: var(--space-sm);
+    max-width: none;
+  }
+
+  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__title,
+  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__title,
+  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__title,
+  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__title {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    max-width: 12ch;
+  }
+
+  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__episode,
+  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__episode,
+  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__episode,
+  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__episode {
+    font-size: 0.58rem;
+  }
+}
+
 .title-card__series {
   font-family: var(--font-display);
   font-weight: 400;
@@ -434,41 +505,144 @@ a.card-link:hover {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Article body — zine measure + breakout media                               */
+/* Article body — poster field + calm column                                  */
 /* -------------------------------------------------------------------------- */
 
 /*
- * Prose is constrained to --measure; media can break wider via plate modifiers.
- * Imagery uses `.passage` units that cycle automatically (see Plates below).
+ * Poster chrome (uniform, not chaotic):
+ *   frame border · corner marks · top/footer rails · hairline breaks
+ * Content stays one measure, left-aligned. Plates: freeform stage + caption under.
  */
 .article-body {
-  padding-top: var(--space-lg);
-  padding-bottom: var(--space-2xl);
+  position: relative;
+  max-width: var(--shell);
+  width: 100%;
   margin-inline: auto;
+  padding:
+    clamp(1.5rem, 3.5vw, 2.5rem)
+    clamp(1rem, 3vw, 2rem)
+    var(--space-2xl);
   font-family: var(--font-body);
   font-size: 1.05rem;
   line-height: var(--lh-body);
   letter-spacing: 0.01em;
+  border: 0.05rem solid color-mix(in srgb, var(--fg) 32%, transparent);
+  box-sizing: border-box;
 }
 
-/* --- text column ---------------------------------------------------------- */
+/* Corner registration marks — same glyph on every corner */
+.article-body > .poster-frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
 
+.plate__mark {
+  position: absolute;
+  width: 0.65rem;
+  height: 0.65rem;
+  opacity: 0.65;
+}
+
+.plate__mark::before,
+.plate__mark::after {
+  content: "";
+  position: absolute;
+  background: var(--fg);
+}
+
+.plate__mark::before {
+  left: 50%;
+  top: 0;
+  width: 0.05rem;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.plate__mark::after {
+  top: 50%;
+  left: 0;
+  height: 0.05rem;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.plate__mark--tl { top: 0.55rem; left: 0.55rem; }
+.plate__mark--tr { top: 0.55rem; right: 0.55rem; }
+.plate__mark--bl { bottom: 0.55rem; left: 0.55rem; }
+.plate__mark--br { bottom: 0.55rem; right: 0.55rem; }
+
+/* Top + footer rails — full width of the frame, mono, three slots */
+.poster-rail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem 1rem;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 var(--space-lg);
+  padding: 0 0 0.7rem;
+  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 1.05vw, 0.68rem);
+  font-weight: 500;
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+  opacity: 0.7;
+  line-height: 1.35;
+}
+
+.poster-rail > * {
+  margin: 0;
+}
+
+@media (min-width: 36rem) {
+  .poster-rail {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: baseline;
+  }
+
+  .poster-rail > :nth-child(2) {
+    text-align: center;
+  }
+
+  .poster-rail > :nth-child(3),
+  .poster-rail .poster-rail__end {
+    text-align: right;
+  }
+}
+
+.poster-rail--footer {
+  margin: var(--space-2xl) 0 0;
+  padding: 0.75rem 0 0;
+  border-bottom: none;
+  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
+}
+
+/* Content column + full-width chrome */
 .article-body > :where(
   p,
   h1, h2, h3, h4, h5, h6,
   ul, ol, dl,
-  blockquote:not(.pull),
+  blockquote,
   pre,
   hr,
   .byline,
   .standfirst,
   .endnote,
   .prose,
+  .pull,
   .passage
 ) {
   max-width: var(--measure);
   width: 100%;
   margin-inline: auto;
+}
+
+.article-body > :where(.poster-rail) {
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
 }
 
 .article-body > p,
@@ -477,11 +651,10 @@ a.card-link:hover {
   margin-block: 0 var(--rhythm);
 }
 
-/* Lede: first prose paragraph after byline/standfirst */
 .article-body > p.lede,
 .article-body > .standfirst + p,
 .prose > p.lede {
-  font-size: 1.12rem;
+  font-size: 1.1rem;
   line-height: 1.55;
 }
 
@@ -489,18 +662,18 @@ a.card-link:hover {
 .article-body > p.lede::first-letter,
 .prose > p.lede::first-letter {
   font-family: var(--font-display);
-  font-size: 3.6em;
+  font-size: 3.2em;
   float: left;
-  line-height: 0.78;
-  padding: 0.06em 0.12em 0 0;
+  line-height: 0.8;
+  padding: 0.05em 0.1em 0 0;
   font-weight: 400;
   color: var(--fg);
 }
 
-/* Continuous measure for ad-hoc float runs (prefer .passage for rhythm) */
 .prose {
   max-width: var(--measure);
   width: 100%;
+  margin-inline: auto;
 }
 
 .prose::after {
@@ -518,40 +691,47 @@ a.card-link:hover {
   opacity: 0.75;
 }
 
-/* Headings */
+/* Display type — one family, one alignment, stepped scale */
 .article-body h1,
 .article-body h2,
-.article-body h3,
-.article-body h4,
-.article-body h5,
-.article-body h6 {
+.article-body h3 {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: var(--track-tight);
-  text-transform: none;
-  line-height: 1.15;
+  text-transform: uppercase;
+  line-height: 0.95;
   text-wrap: balance;
+  text-align: left;
+}
+
+.article-body h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin: var(--space-xl) auto var(--space-md);
 }
 
 .article-body h2 {
-  font-size: clamp(1.65rem, 3.2vw, 2.15rem);
-  margin: calc(var(--space-lg) + 0.5rem) auto var(--space-md);
-  padding-top: var(--space-sm);
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  margin: var(--space-xl) auto var(--space-md);
+  padding: var(--space-md) 0;
+  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
+  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
 }
 
 .article-body h3 {
-  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
   margin: var(--space-lg) auto var(--space-sm);
+  text-transform: none;
+  line-height: 1.2;
 }
 
 .article-body h4 {
   margin: var(--space-md) auto var(--space-sm);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .article-body ul,
@@ -569,11 +749,20 @@ a.card-link:hover {
   color: color-mix(in srgb, var(--fg) 55%, transparent);
 }
 
+/* Full-width line breaks inside the poster frame */
 .article-body hr {
   border: none;
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 35%, transparent);
-  margin: var(--space-lg) auto;
+  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
+  margin: var(--space-xl) auto;
+  max-width: none;
+  width: 100%;
+}
+
+/* Short centered rule (optional class) */
+.article-body hr.rule-short {
   max-width: 4rem;
+  margin-inline: auto;
+  border-top-color: color-mix(in srgb, var(--fg) 45%, transparent);
 }
 
 .article-body blockquote:not(.pull) {
@@ -594,8 +783,7 @@ a.card-link:hover {
 .article-body pre {
   margin: var(--space-md) auto var(--rhythm);
   padding: var(--space-sm) var(--space-md);
-  border: 0.05rem solid color-mix(in srgb, var(--fg) 35%, transparent);
-  border-left: 0.1rem solid var(--fg);
+  border: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
   overflow-x: auto;
   font-size: 0.8rem;
   line-height: 1.45;
@@ -605,7 +793,6 @@ a.card-link:hover {
   font-size: inherit;
 }
 
-/* Meta / standfirst */
 .byline {
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -616,49 +803,57 @@ a.card-link:hover {
   opacity: 0.55;
 }
 
+/* Standfirst — single display block, same left edge as body */
 .standfirst {
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
-  line-height: 1.3;
-  letter-spacing: 0.01em;
+  font-size: clamp(2rem, 6.5vw, 3.75rem);
+  line-height: 0.95;
+  letter-spacing: var(--track-tight);
+  text-transform: uppercase;
   margin: 0 auto var(--space-lg);
   max-width: var(--measure);
-  text-wrap: pretty;
+  text-wrap: balance;
+}
+
+.standfirst span {
+  display: block;
 }
 
 .endnote {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
   opacity: 0.55;
-  margin-top: var(--space-xl);
+  margin: var(--space-xl) auto 0;
   padding-top: var(--space-md);
   border-top: 0.05rem solid color-mix(in srgb, var(--fg) 25%, transparent);
+  max-width: var(--measure);
 }
 
-/* Pull quote — breaks to wide measure */
+/* Pull — same measure and hairline language as h2 */
 .pull {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  line-height: 1.2;
-  letter-spacing: 0.01em;
+  font-size: clamp(1.45rem, 3.2vw, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: var(--track-tight);
   text-transform: none;
   font-style: normal;
   border: none;
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 40%, transparent);
-  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 40%, transparent);
+  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
+  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
   padding: var(--space-md) 0;
-  margin: var(--space-lg) auto;
-  max-width: var(--measure-wide);
+  margin: var(--space-xl) auto;
+  max-width: var(--measure);
   text-wrap: balance;
 }
 
 .pull cite {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-style: normal;
+  font-weight: 500;
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
   margin-top: var(--space-sm);
@@ -688,7 +883,7 @@ a.card-link:hover {
 .passage {
   max-width: var(--measure);
   width: 100%;
-  margin: var(--space-lg) auto;
+  margin: var(--space-xl) auto;
   padding: 0;
 }
 
@@ -704,12 +899,16 @@ a.card-link:hover {
 }
 
 .passage__body {
-  /* text that wraps floats; optional on inset beats */
   display: flow-root;
 }
 
 .passage__body > :last-child {
   margin-bottom: 0;
+}
+
+.passage__body > h2:first-child,
+.passage__body > h3:first-child {
+  margin-top: 0;
 }
 
 /* --- automatic cycle (section.passage siblings only via nth-of-type) ------ */
@@ -814,6 +1013,12 @@ a.card-link:hover {
 
 /* --- plate figure chrome -------------------------------------------------- */
 
+/*
+ * Universal plate:
+ *   .plate__stage  — freeform assets (cutout / irregular PNG, transparency)
+ *   .plate__frame  — optional crop box (aspect-ratio + cover) for photos
+ * Type always sits under the image (works for any shape).
+ */
 .plate {
   margin: var(--space-lg) auto;
   padding: 0;
@@ -833,18 +1038,32 @@ a.card-link:hover {
   max-width: 100%;
 }
 
-.plate img {
-  display: block;
+/* Freeform stage: no crop, no forced ratio, respects alpha */
+.plate__stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: auto;
-  background: #111;
+  background: transparent;
 }
 
+.plate__stage img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(70vh, 36rem);
+  object-fit: contain;
+  background: transparent;
+}
+
+/* Optional rectangular crop (photos only — not for cutouts) */
 .plate__frame {
   display: block;
   width: 100%;
   overflow: hidden;
   background: #0a0a0a;
+  position: relative;
 }
 
 .plate__frame img {
@@ -852,6 +1071,19 @@ a.card-link:hover {
   height: 100%;
   object-fit: cover;
   display: block;
+  background: #111;
+}
+
+/* Bare img direct child of .plate */
+.plate > img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(70vh, 36rem);
+  margin-inline: auto;
+  object-fit: contain;
+  background: transparent;
 }
 
 /* Staged empty slot — layout holds without a photograph */
@@ -881,6 +1113,10 @@ a.card-link:hover {
 .slot--portrait { aspect-ratio: 2 / 3; }
 .slot--wide { aspect-ratio: 16 / 9; }
 
+/*
+ * Caption under every plate — same stack always:
+ *   mono kicker (optional) → display title (optional) → credit line
+ */
 .plate figcaption {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -889,10 +1125,29 @@ a.card-link:hover {
   text-transform: uppercase;
   text-align: left;
   border-bottom: none;
-  padding: var(--space-xs) 0 0;
+  padding: var(--space-sm) 0 0;
   margin: 0;
-  opacity: 0.55;
+  opacity: 0.65;
   line-height: 1.4;
+}
+
+.plate figcaption .plate__kicker {
+  display: block;
+  margin: 0 0 0.35rem;
+  opacity: 0.85;
+}
+
+.plate figcaption .plate__title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: var(--track-tight);
+  text-transform: uppercase;
+  line-height: 0.95;
+  opacity: 1;
+  margin: 0 0 0.4rem;
+  max-width: 16ch;
 }
 
 .plate figcaption .credit {
@@ -902,6 +1157,11 @@ a.card-link:hover {
   text-transform: none;
   letter-spacing: 0.02em;
   font-size: 0.9em;
+}
+
+/* Span passages use the wide measure */
+.article-body > section.passage.passage--span {
+  max-width: var(--measure-wide);
 }
 
 /* Ad-hoc floats (outside rhythm) — prefer .passage */

@@ -6,12 +6,12 @@
     <title>Episode : 01 — Angel Attack · Verso</title>
     <meta
       name="description"
-      content="Sample article: plate rhythm — inset, float right, float left, repeat."
+      content="Sample article: plates attached to pulls, headings, and impact lines."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Courier+Prime:wght@400;700&family=Instrument+Serif&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../css/concrete.min.css" />
@@ -25,6 +25,7 @@
           <ul>
             <li><a href="../index.html">Issues</a></li>
             <li><a href="angel-attack.html" aria-current="page">Sample</a></li>
+            <li><a href="the-beast.html">Test</a></li>
             <li><a href="../about.html">About</a></li>
           </ul>
         </nav>
@@ -48,80 +49,91 @@
       <p class="byline">Issue 01 · Sample · 12 min</p>
 
       <p class="standfirst">
-        Every image is a passage. Passages cycle on their own: inset, float
-        right, float left — then the loop starts again. Constant structure,
-        varying frames.
+        Impact moments reuse the Evangelion title card — stacked series,
+        mono label left, title flush right. The plate rhythm still cycles;
+        plain headers stay quiet.
       </p>
 
       <p class="lede">
-        The title card opens the piece. After that, body copy and pictures share
-        one rhythm so no article invents its own layout language. You only write
-        <code>&lt;section class="passage"&gt;</code> around each plate; CSS picks
-        the beat from order.
+        Ordinary paragraphs stay plain. When a beat needs emphasis, wrap a
+        <code>section.passage</code> around the plate and put a
+        <code>title-card title-card--inline</code> in
+        <code>.passage__body</code> so they travel together.
       </p>
 
       <p>
-        Intervening paragraphs and headings do not reset the count — only
-        <code>section</code> elements do. Put text that should wrap a float
-        inside <code>.passage__body</code> next to the figure.
+        Intervening copy does not reset the count — only
+        <code>section</code> elements do. Order alone still assigns inset →
+        float right → float left.
       </p>
 
-      <blockquote class="pull">
-        Inset → float right → float left → repeat. Same bones every issue.
-        <cite>Plate rhythm</cite>
-      </blockquote>
-
-      <!-- ── Cycle 1, beat 1: inset ─────────────────────────────────────── -->
+      <!-- ── Beat 1 (inset): Eva card + plate ───────────────────────────── -->
       <section class="passage">
         <figure class="plate">
           <div class="plate__frame" style="aspect-ratio: 3 / 2">
             <img
               src="https://picsum.photos/seed/verso-a1/1200/800"
-              alt="Inset plate placeholder"
+              alt="Inset plate under an Eva card"
               width="1200"
               height="800"
               loading="lazy"
             />
           </div>
           <figcaption>
-            Passage 1 · inset
-            <span class="credit">Full measure block</span>
+            Attached to a title card
+            <span class="credit">Inset · full measure</span>
           </figcaption>
         </figure>
-      </section>
-
-      <p>
-        After an inset, ordinary copy continues in the measure. The next
-        <code>section.passage</code> will float right — no extra classes
-        required.
-      </p>
-
-      <!-- ── Cycle 1, beat 2: float right ──────────────────────────────── -->
-      <section class="passage">
-        <figure class="plate">
-          <div class="slot slot--portrait" aria-hidden="true">2:3</div>
-          <figcaption>Passage 2 · float right</figcaption>
-        </figure>
         <div class="passage__body">
-          <p>
-            Text in <code>passage__body</code> wraps the plate on wide screens.
-            On small screens the plate stacks full-width above the copy. Empty
-            slots are valid — ship the layout before the scan lands.
-          </p>
-          <p>
-            Keep float bodies short enough that the wrap still reads; if the
-            note is long, use an inset beat instead.
-          </p>
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>Inset</span>
+              <span>Float</span>
+              <span>Left</span>
+            </p>
+            <h2 class="sr-only">Inset, float, left</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Plate rhythm</p>
+              <p class="title-card__title">Repeat</p>
+            </div>
+          </header>
         </div>
       </section>
 
-      <h2>How the cycle works</h2>
-
       <p>
-        Among siblings of <code>main.article-body</code>, every
-        <code>section.passage</code> is numbered 1, 2, 3… by CSS
-        <code>:nth-of-type</code>:
+        After that moment, body copy continues in the measure with no special
+        classes. The next passage will float — the same card grammar, compressed
+        beside the frame.
       </p>
+
+      <!-- ── Beat 2 (float right): Eva card + wrap ──────────────────────── -->
+      <section class="passage">
+        <figure class="plate">
+          <div class="slot slot--portrait" aria-hidden="true">2:3</div>
+          <figcaption>Attached to a title card</figcaption>
+        </figure>
+        <div class="passage__body">
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>How</span>
+              <span>The</span>
+              <span>Cycle</span>
+              <span>Works</span>
+            </p>
+            <h2 class="sr-only">How the cycle works</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Section&nbsp;: 02</p>
+              <p class="title-card__title">Nth Of Type</p>
+            </div>
+          </header>
+          <p>
+            Among siblings of <code>main.article-body</code>, every
+            <code>section.passage</code> is numbered by CSS
+            <code>:nth-of-type</code>. Put the Eva card in
+            <code>passage__body</code> so the plate rides with the peak.
+          </p>
+        </div>
+      </section>
 
       <ul>
         <li><strong>1, 4, 7…</strong> — inset (block, full measure)</li>
@@ -129,24 +141,36 @@
         <li><strong>3, 6, 9…</strong> — float left</li>
       </ul>
 
-      <!-- ── Cycle 1, beat 3: float left ───────────────────────────────── -->
+      <!-- ── Beat 3 (float left): Eva card ──────────────────────────────── -->
       <section class="passage">
         <figure class="plate">
           <div class="plate__frame" style="aspect-ratio: 1 / 1">
             <img
               src="https://picsum.photos/seed/verso-a3/800/800"
-              alt="Float left placeholder"
+              alt="Square plate with Eva card"
               width="800"
               height="800"
               loading="lazy"
             />
           </div>
-          <figcaption>Passage 3 · float left</figcaption>
+          <figcaption>Attached to a title card</figcaption>
         </figure>
         <div class="passage__body">
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>One</span>
+              <span>Sentence</span>
+              <span>Lands</span>
+            </p>
+            <h2 class="sr-only">One sentence lands</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Impact</p>
+              <p class="title-card__title">Beside It</p>
+            </div>
+          </header>
           <p>
-            Third passage of the cycle. After this, the next section is inset
-            again — the loop is the whole framework.
+            Keep the body short enough that the wrap still reads. The card is
+            the peak; the paragraph is only the aftermath.
           </p>
         </div>
       </section>
@@ -154,22 +178,38 @@
       <h2>Second cycle</h2>
 
       <p>
-        Same markup, new pictures. The framework does not care what the frames
-        show — only their order.
+        Same attachment idea, new pictures. Ordinary <code>h2</code> elements
+        outside a passage stay text-only; reach for
+        <code>title-card--inline</code> only when the section itself is the
+        moment.
       </p>
 
-      <!-- ── Cycle 2, beat 1: inset ─────────────────────────────────────── -->
+      <!-- ── Beat 4 (inset): staged slot + Eva card ─────────────────────── -->
       <section class="passage">
         <figure class="plate">
           <div class="slot slot--wide" aria-hidden="true">16:9 · staged</div>
           <figcaption>
-            Passage 4 · inset again
+            Staged before the scan lands
             <span class="credit">Empty slot is fine</span>
           </figcaption>
         </figure>
+        <div class="passage__body">
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>Ship</span>
+              <span>The</span>
+              <span>Layout</span>
+            </p>
+            <h2 class="sr-only">Ship the layout</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Before the scan</p>
+              <p class="title-card__title">Holds</p>
+            </div>
+          </header>
+        </div>
       </section>
 
-      <!-- ── Cycle 2, beat 2: float right ──────────────────────────────── -->
+      <!-- ── Beat 5 (float right): Eva card wraps the plate ─────────────── -->
       <section class="passage">
         <figure class="plate">
           <div class="plate__frame" style="aspect-ratio: 2 / 3">
@@ -181,73 +221,99 @@
               loading="lazy"
             />
           </div>
-          <figcaption>Passage 5 · float right</figcaption>
+          <figcaption>Card beside a float</figcaption>
         </figure>
         <div class="passage__body">
-          <p>
-            Second float-right of the piece. Vary crop and content; keep the
-            skeleton identical.
-          </p>
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>Vary</span>
+              <span>Crop</span>
+            </p>
+            <h2 class="sr-only">Vary crop</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Second cycle</p>
+              <p class="title-card__title">Same Bones</p>
+            </div>
+          </header>
         </div>
       </section>
 
-      <!-- ── Cycle 2, beat 3: float left ───────────────────────────────── -->
+      <!-- ── Beat 6 (float left): Eva card ──────────────────────────────── -->
       <section class="passage">
         <figure class="plate">
           <div class="slot slot--square" aria-hidden="true">1:1</div>
-          <figcaption>Passage 6 · float left</figcaption>
+          <figcaption>Card + short lead</figcaption>
         </figure>
         <div class="passage__body">
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>Escapes</span>
+            </p>
+            <h2 class="sr-only">Escapes</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Section&nbsp;: 06</p>
+              <p class="title-card__title">Say So</p>
+            </div>
+          </header>
           <p>
-            End of the second cycle. Add more passages as the piece needs; they
-            keep stepping through the same three beats.
+            When the rhythm must break, say so on the section:
+            <code>passage--inset</code>, <code>passage--float-right</code>,
+            <code>passage--float-left</code>, or a wider
+            <code>passage--span</code> / <code>passage--fill</code>.
           </p>
         </div>
       </section>
 
-      <h2>Escapes</h2>
-
-      <p>
-        When the rhythm must break, say so on the section:
-        <code>passage--inset</code>, <code>passage--float-right</code>,
-        <code>passage--float-left</code>. For a wider block that stays out of
-        the float cycle, use <code>passage--span</code> or
-        <code>passage--fill</code> (always block). Equal text/image columns use
-        <code>.pair</code> outside the passage sequence.
-      </p>
-
+      <!-- ── Span escape: wide plate + Eva card ─────────────────────────── -->
       <section class="passage passage--span">
         <figure class="plate">
           <div class="slot slot--wide" aria-hidden="true">span escape</div>
           <figcaption>
-            Explicit span · does not float
-            <span class="credit">Still counts as a section in the cycle</span>
+            Wider block · still a section in the cycle
+            <span class="credit">Prefer keeping escapes rare</span>
           </figcaption>
         </figure>
+        <div class="passage__body">
+          <header class="title-card title-card--inline">
+            <p class="title-card__series" aria-hidden="true">
+              <span>Still</span>
+              <span>Counts</span>
+            </p>
+            <h2 class="sr-only">Still counts</h2>
+            <div class="title-card__meta">
+              <p class="title-card__episode">Nth of type</p>
+              <p class="title-card__title">Next Beat</p>
+            </div>
+          </header>
+        </div>
       </section>
 
       <p>
-        Note: a span escape is still a <code>section</code>, so it advances the
-        nth-of-type counter. Prefer keeping escapes rare, or place them with
-        awareness of the next beat.
+        Prefer attaching plates only where an Eva card already wants to land.
+        Decorative images without a peak are fine — leave
+        <code>passage__body</code> out.
       </p>
 
       <pre><code>&lt;section class="passage"&gt;
-  &lt;figure class="plate"&gt;
-    &lt;div class="plate__frame" style="aspect-ratio: 3 / 2"&gt;
-      &lt;img src="…" alt="…" /&gt;
-    &lt;/div&gt;
-    &lt;figcaption&gt;Caption&lt;/figcaption&gt;
-  &lt;/figure&gt;
-  &lt;!-- float beats: optional wrapping copy --&gt;
+  &lt;figure class="plate"&gt;…&lt;/figure&gt;
   &lt;div class="passage__body"&gt;
-    &lt;p&gt;…&lt;/p&gt;
+    &lt;header class="title-card title-card--inline"&gt;
+      &lt;p class="title-card__series"&gt;
+        &lt;span&gt;Line&lt;/span&gt;
+        &lt;span&gt;Two&lt;/span&gt;
+      &lt;/p&gt;
+      &lt;h2 class="sr-only"&gt;…&lt;/h2&gt;
+      &lt;div class="title-card__meta"&gt;
+        &lt;p class="title-card__episode"&gt;Label&lt;/p&gt;
+        &lt;p class="title-card__title"&gt;Title&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
   &lt;/div&gt;
 &lt;/section&gt;</code></pre>
 
       <p id="placeholder" class="endnote">
         <a href="../index.html">← Back to the issue</a>
-        · Episode : 01 · plate rhythm
+        · Episode : 01 · plates on impact
       </p>
     </main>
 

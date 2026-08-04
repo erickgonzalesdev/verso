@@ -6,7 +6,7 @@ but deliberately lighter: no build, no components framework, classless HTML.
 ## Stack
 
 - **Base:** [concrete.css](https://github.com/louismerlin/concrete.css) 3.1, vendored at `css/concrete.min.css`
-- **Theme:** `css/theme.css` only — tokens, title cards, chrome, article type, plate rhythm
+- **Theme:** `css/theme.css` only — tokens, title cards, chrome, article poster field, plate rhythm
 - **Pages:** plain HTML (`index.html`, `about.html`, `articles/*.html`)
 - **Serve:** `npm run dev` → static server on port 4173 (no bundler)
 
@@ -15,9 +15,10 @@ but deliberately lighter: no build, no components framework, classless HTML.
 | Layer | Inspiration | What we took |
 | --- | --- | --- |
 | Base | concrete.css | Measure ~640px, classless prose, semantic elements |
-| Titles | Neon Genesis Evangelion title cards | Stacked series mark, `EPISODE : n` left, title right, monumental type |
+| Open titles | Neon Genesis Evangelion title cards | Stacked series mark, `EPISODE : n` left, title right, monumental type |
 | Chrome | [Hermes Agent](https://hermes-agent.nousresearch.com/) | Centered wordmark nav, mono eyebrows, open feature blocks — **not** their blue |
-| Body type | Hermes descriptive copy | **Courier Prime** for article prose |
+| Body type | Mono prose | **IBM Plex Mono** for article reading |
+| Article field | Editorial / print posters | Frame, corner marks, top/footer rails, hairline breaks — calm, one column |
 
 ## Colour
 
@@ -30,13 +31,13 @@ but deliberately lighter: no build, no components framework, classless HTML.
 
 | Role | Face |
 | --- | --- |
-| Title cards, in-article headings (`h2`/`h3`), pull quotes, standfirst | **Instrument Serif** (`--font-display`) |
-| Article body prose | **Courier Prime** (`--font-body`) |
-| Nav, kickers, bylines, captions, episode labels, code, `h4` labels | **JetBrains Mono** (`--font-mono`) |
+| Open title cards, standfirst, `h2`/`h1`, pulls, plate titles | **Instrument Serif** (`--font-display`) |
+| Article body prose | **IBM Plex Mono** (`--font-body`) |
+| Nav, kickers, bylines, rails, captions, code, `h4` | **JetBrains Mono** (`--font-mono`) |
 
-Fonts load from Google Fonts in each HTML `<head>`. Keep the three faces in sync across pages when adding a new HTML file.
+Fonts load from Google Fonts in each HTML `<head>` (Instrument Serif, IBM Plex Mono, JetBrains Mono). Keep faces in sync across pages when adding a new HTML file.
 
-## Title card pattern
+## Title card pattern (episode open)
 
 ```html
 <header class="title-card">
@@ -55,40 +56,126 @@ Fonts load from Google Fonts in each HTML `<head>`. Keep the three faces in sync
 - Full-width, same black as the page (transparent card on black body)
 - Beat concrete’s `body > header { max-width; padding: 8rem }` when using a real `<header class="title-card">`
 - Series mark stacks via `span { display: block }`
+- Optional: `.title-card--compact` for short opens (about page)
 
 ## Layout shells
 
 - `body.site` — unlocks full-width; chrome lives in `.shell` (wider max-width + gutters)
-- `main.shell.article-body` — shell-wide so media can break the reading column
-- Prose children — constrained to `--measure` (~38rem)
+- `main.shell.article-body` — poster field + reading column
+- Prose / heads / pulls / passages — constrained to `--measure` (~38rem), shared left edge
 - Masthead — Hermes-style three-column grid, mark centered
+
+## Article = long poster (calm)
+
+Each article body is a **poster field** around a **single reading column**. Low noise, uniform, not asymmetric chaos.
+
+### Chrome (inside `main.article-body`)
+
+1. **Frame** — thin border on `.article-body`
+2. **Corner marks** — four `+` registration marks via `.poster-frame` + `.plate__mark--tl|tr|bl|br`
+3. **Top rail** — `.poster-rail` with three mono slots (issue · episode · meta)
+4. **Footer rail** — `.poster-rail.poster-rail--footer` (close the piece)
+5. **Hairline breaks** — full-width `<hr>` between major beats; `h2` has top + bottom hairlines
+
+```html
+<main class="shell article-body">
+  <div class="poster-frame" aria-hidden="true">
+    <span class="plate__mark plate__mark--tl"></span>
+    <span class="plate__mark plate__mark--tr"></span>
+    <span class="plate__mark plate__mark--bl"></span>
+    <span class="plate__mark plate__mark--br"></span>
+  </div>
+
+  <div class="poster-rail">
+    <p>Issue 01 · Verso</p>
+    <p>Episode 02 · Title</p>
+    <p class="poster-rail__end">9 min</p>
+  </div>
+
+  <p class="byline">…</p>
+  <p class="standfirst"><span>Line</span><span>Two</span></p>
+  <!-- body, pulls, passages… -->
+
+  <div class="poster-rail poster-rail--footer">
+    <p>Verso · Issue 01</p>
+    <p>Episode 02</p>
+    <p class="poster-rail__end"><a href="../index.html">← All episodes</a></p>
+  </div>
+</main>
+```
+
+### Body elements
+
+| Class | Role |
+| --- | --- |
+| `.byline` | Mono meta under the top rail |
+| `.standfirst` | Monumental Instrument title (optional stacked `span`s) |
+| `.lede` | First prose + drop cap |
+| `.pull` | Serif quote, hairlines top/bottom, optional `<cite>` |
+| `h2` | Section display, hairlines top/bottom |
+| `.endnote` | Optional mono footer line (prefer footer rail for close) |
+
+Do **not** invent asymmetric “poster bands,” multi-column spec grids, or type-over-image HUDs. Drama is scale + spacing + chrome, not a second layout language.
 
 ## Hard rules (easy to break)
 
-1. **Classless prose.** Theme classes are for cards, feed, features, masthead, buttons, passages — not for every paragraph.
-2. **Tokens in `theme.css` only.** Don’t scatter colours or typefaces into HTML `style=` attributes (aspect-ratio on frames is fine).
+1. **Classless prose.** Theme classes are for cards, feed, features, masthead, buttons, passages, poster chrome — not for every paragraph.
+2. **Tokens in `theme.css` only.** Don’t scatter colours or typefaces into HTML `style=` attributes (aspect-ratio on crop frames is fine).
 3. **Stay monochrome.** Hover is underline, opacity, or invert — do not reintroduce Hermes blue unless the issue explicitly asks.
 4. **Don’t fight concrete.** Prefer semantic HTML; override only where title cards or the black field require it.
-5. **Three type roles.** Serif = titles/cards; Courier Prime = reading; JetBrains = UI chrome. Don’t mix roles casually.
-6. **Plate rhythm is universal.** Every article uses `section.passage` in order; do not invent per-piece image layouts.
-7. **No remark/rehype/Astro unless the project graduates.** This starter is a folder you can ship.
+5. **Three type roles.** Instrument Serif = display; IBM Plex Mono = reading; JetBrains = chrome/rails.
+6. **Article = long poster, low noise.** Frame + corner marks + top/footer rails + hairline `<hr>` breaks. One measure, shared left edge.
+7. **Plate rhythm is universal.** Every article uses `section.passage` in order; do not invent per-piece image layouts.
+8. **No remark/rehype/Astro unless the project graduates.** This starter is a folder you can ship.
 
 ## Adding an article
 
-1. Copy `articles/angel-attack.html`
-2. Change title card series / episode / title
-3. Write prose under `<main class="shell article-body">`
-4. For every image: add a `<section class="passage">` (see plate rhythm)
+1. Prefer copying `articles/the-beast.html` (full poster chrome + filled plates) or `articles/angel-attack.html` (pattern sample)
+2. Change open title card series / episode / title
+3. Write prose under `<main class="shell article-body">` with poster-frame + rails
+4. For every image: add a `<section class="passage">` (see plates)
 5. Link it from the feed on `index.html`
+6. Keep Google Fonts link in sync with other pages
 
-## Article body
+## Plates
 
-- **Standfirst** (`.standfirst`): serif dek under the byline
-- **Lede** (`.lede`): slightly larger + drop cap
-- **Pull** (`.pull`): wide serif quote with hairline top/bottom + optional `<cite>`
-- **Endnote** (`.endnote`): mono footer line for “back to issue”
+### Stage vs frame
 
-### Plate rhythm (universal — every article)
+| Wrapper | Use when |
+| --- | --- |
+| **`.plate__stage`** (default) | Freeform / irregular / transparent PNGs; natural silhouette; no crop |
+| **`.plate__frame`** | Rectangular photo crop; set `style="aspect-ratio: …"` |
+
+Type always sits **under** the image (not over it). Same caption stack every time.
+
+```html
+<section class="passage">
+  <figure class="plate">
+    <div class="plate__stage">
+      <img src="cutout.png" alt="…" />
+    </div>
+    <figcaption>
+      <span class="plate__kicker">01 · Label</span>
+      <span class="plate__title">Display Title</span>
+      <span class="credit">Optional credit</span>
+    </figcaption>
+  </figure>
+  <!-- float beats: optional wrapping copy -->
+  <div class="passage__body">
+    <p>…</p>
+  </div>
+</section>
+```
+
+Cropped photo (optional):
+
+```html
+<div class="plate__frame" style="aspect-ratio: 3 / 2">
+  <img src="photo.jpg" alt="…" />
+</div>
+```
+
+### Plate rhythm (universal)
 
 Every image moment is a **passage**. Do not hand-pick inset/float per piece;
 **order alone** assigns the beat.
@@ -101,32 +188,16 @@ Every image moment is a **passage**. Do not hand-pick inset/float per piece;
 | 2, 5, 8… | **Float right** — plate + optional `.passage__body` |
 | 3, 6, 9… | **Float left** — same |
 
-Only `<section>` elements count toward the cycle. Ordinary `<p>` / `<h2>`
-between passages do not reset it.
-
-```html
-<section class="passage">
-  <figure class="plate">
-    <div class="plate__frame" style="aspect-ratio: 3 / 2">
-      <img src="…" alt="…" />
-      <!-- or empty stage: <div class="slot slot--wide">16:9</div> -->
-    </div>
-    <figcaption>Caption <span class="credit">Credit</span></figcaption>
-  </figure>
-  <!-- recommended on float beats -->
-  <div class="passage__body">
-    <p>Copy that wraps the float.</p>
-  </div>
-</section>
-```
+Only `<section>` elements count toward the cycle. Ordinary `<p>` / `<h2>` / `<hr>` between passages do not reset it.
 
 **Rules**
 
 1. Always use `<section class="passage">` for images — bare figures are escapes only.
-2. Put wrapping copy in `.passage__body` on float beats.
-3. Vary crop, caption, and content; do not vary the skeleton.
-4. Slots may replace images; empty stages are valid (compose before photographs arrive).
-5. Do not use other `section` elements inside `article-body` unless you intend them to advance the cycle.
+2. Prefer `.plate__stage` unless you intentionally need a crop.
+3. Put wrapping copy in `.passage__body` on float beats.
+4. Caption stack: kicker → title → credit; do not invent per-piece caption layouts.
+5. Slots may replace images: `.slot`, `.slot--square`, `.slot--portrait`, `.slot--wide`.
+6. Do not use other `section` elements inside `article-body` unless you intend them to advance the cycle.
 
 **Escapes** (rare)
 
@@ -140,23 +211,27 @@ between passages do not reset it.
 
 Span/fill/forced passages are still `<section>`s and **still advance** the nth-of-type counter. Prefer keeping escapes rare.
 
-**Slots:** `.slot` (default 3:2), `.slot--square`, `.slot--portrait`, `.slot--wide`.
+**Samples**
 
-**Sample:** `articles/angel-attack.html` demonstrates two full cycles plus a span escape.
+- `articles/the-beast.html` — full poster chrome + filled plates (canonical article)
+- `articles/angel-attack.html` — plate rhythm / pattern sample
 
 ## Verifying
 
 ```bash
 npm run dev
-# open sample article
+# open http://localhost:4173/articles/the-beast.html
 ```
 
 Check:
 
 - Pure black field (no gray seam under the masthead)
 - Title card type scale at 375 / 768 / 1280
-- Type roles: Courier Prime body, Instrument Serif headings, JetBrains chrome
+- Article frame + four corner marks + top/footer rails
+- Hairline breaks between major sections
+- Type roles: IBM Plex Mono body, Instrument Serif display, JetBrains chrome
 - Passage 1 inset, 2 float-right, 3 float-left, 4 inset again
+- Freeform stages do not crop transparent/irregular PNGs
 - Floats stack full-width below ~40rem
 - No horizontal overflow
 
