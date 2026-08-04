@@ -62,12 +62,25 @@ Fonts load from Google Fonts in each HTML `<head>` (Instrument Serif, IBM Plex M
 
 - `body.site` — unlocks full-width; chrome lives in `.shell` (wider max-width + gutters)
 - `main.shell.article-body` — poster field + reading column
-- Prose / heads / pulls / passages — constrained to `--measure` (~38rem), shared left edge
+- Prose / heads / pulls / passages — constrained to `--measure` (~38rem)
 - Masthead — Hermes-style three-column grid, mark centered
+- **Open title card** — left/right Eva grammar; do **not** restyle it when tweaking article type
 
 ## Article = long poster (calm)
 
 Each article body is a **poster field** around a **single reading column**. Low noise, uniform, not asymmetric chaos.
+
+### Alignment (article only — not the open title card)
+
+| Element | Alignment |
+| --- | --- |
+| Body prose (`.lede`, `p`, lists) | **Left** (readable) |
+| Standfirst, byline, endnote | **Center** |
+| `h1`–`h4`, `.pull`, `.impact` | **Center** |
+| Plate figcaption (kicker / title / credit) | **Center** |
+| Open `.title-card` | **Unchanged** (series left stack, episode left / title right) |
+
+When the user asks to change article type or layout, **leave the open title card alone** unless they explicitly include it.
 
 ### Chrome (inside `main.article-body`)
 

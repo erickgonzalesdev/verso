@@ -691,7 +691,7 @@ a.card-link:hover {
   opacity: 0.75;
 }
 
-/* Display type — one family, one alignment, stepped scale */
+/* Display type — Instrument Serif, centered (not the open title-card) */
 .article-body h1,
 .article-body h2,
 .article-body h3 {
@@ -701,7 +701,7 @@ a.card-link:hover {
   text-transform: uppercase;
   line-height: 0.95;
   text-wrap: balance;
-  text-align: left;
+  text-align: center;
 }
 
 .article-body h1 {
@@ -732,6 +732,7 @@ a.card-link:hover {
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
   opacity: 0.7;
+  text-align: center;
 }
 
 .article-body ul,
@@ -801,9 +802,10 @@ a.card-link:hover {
   text-transform: uppercase;
   margin: 0 auto var(--space-md);
   opacity: 0.55;
+  text-align: center;
 }
 
-/* Standfirst — single display block, same left edge as body */
+/* Standfirst — display block, centered (article only, not open title-card) */
 .standfirst {
   font-family: var(--font-display);
   font-size: clamp(2rem, 6.5vw, 3.75rem);
@@ -813,6 +815,7 @@ a.card-link:hover {
   margin: 0 auto var(--space-lg);
   max-width: var(--measure);
   text-wrap: balance;
+  text-align: center;
 }
 
 .standfirst span {
@@ -829,9 +832,10 @@ a.card-link:hover {
   padding-top: var(--space-md);
   border-top: 0.05rem solid color-mix(in srgb, var(--fg) 25%, transparent);
   max-width: var(--measure);
+  text-align: center;
 }
 
-/* Pull — same measure and hairline language as h2 */
+/* Pull — centered quote, same hairline language as h2 */
 .pull {
   font-family: var(--font-display);
   font-size: clamp(1.45rem, 3.2vw, 2.1rem);
@@ -846,6 +850,7 @@ a.card-link:hover {
   margin: var(--space-xl) auto;
   max-width: var(--measure);
   text-wrap: balance;
+  text-align: center;
 }
 
 .pull cite {
@@ -858,6 +863,19 @@ a.card-link:hover {
   text-transform: uppercase;
   margin-top: var(--space-sm);
   opacity: 0.55;
+  text-align: center;
+}
+
+/* Legacy impact line — centered with other display beats */
+.impact {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: var(--track-tight);
+  margin: 0 auto var(--rhythm);
+  max-width: var(--measure);
+  text-wrap: pretty;
+  text-align: center;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -898,12 +916,31 @@ a.card-link:hover {
   width: 100%;
 }
 
+/*
+ * Wrapping copy for float beats. Must NOT establish a BFC (no flow-root /
+ * overflow:hidden) or text only sits beside the plate and leaves a hole under
+ * a tall image. Normal flow lets line boxes wrap under the float.
+ */
 .passage__body {
-  display: flow-root;
+  display: block;
+  min-width: 0;
+}
+
+.passage__body > :first-child {
+  margin-top: 0;
 }
 
 .passage__body > :last-child {
   margin-bottom: 0;
+}
+
+/* Keep figure caption inside the float box (under the image, not full-width) */
+.passage .plate {
+  display: block;
+}
+
+.passage .plate figcaption {
+  display: block;
 }
 
 .passage__body > h2:first-child,
@@ -1123,7 +1160,7 @@ a.card-link:hover {
   font-weight: 400;
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
-  text-align: left;
+  text-align: center;
   border-bottom: none;
   padding: var(--space-sm) 0 0;
   margin: 0;
@@ -1146,8 +1183,9 @@ a.card-link:hover {
   text-transform: uppercase;
   line-height: 0.95;
   opacity: 1;
-  margin: 0 0 0.4rem;
+  margin: 0 auto 0.4rem;
   max-width: 16ch;
+  text-align: center;
 }
 
 .plate figcaption .credit {
