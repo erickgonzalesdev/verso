@@ -4,7 +4,22 @@
  * One field: pure black. No blue, no gray bands.
  * Hermes contributes layout grammar (centered mark, mono eyebrows,
  * uppercase chrome, monumental display) — not its blue.
+ *
+ * TYPE TRIAL: entire site on Geist Sans (weight variations only).
+ * Revert: restore previous --font-* tokens + Google Fonts <link>s from git.
  */
+
+/* -------------------------------------------------------------------------- */
+/* Geist Sans (local) — single family sitewide                                */
+/* -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Geist Sans";
+  src: url("../assets/fonts/geist/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* -------------------------------------------------------------------------- */
 /* Tokens                                                                     */
@@ -16,15 +31,18 @@
   --bg: #000;
 
   /* concrete.css: --font (body), --font-h (h1–h6) — kill Helvetica */
-  --font: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
-  --font-h: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  --font: "Geist Sans", system-ui, sans-serif;
+  --font-h: "Geist Sans", system-ui, sans-serif;
 
-  --font-display: "Instrument Serif", "Times New Roman", Times, serif;
-  /* Poster display = same Instrument Serif (no separate face) */
+  /* Trial: all roles = Geist Sans; hierarchy via weight only */
+  --font-display: "Geist Sans", system-ui, sans-serif;
   --font-poster: var(--font-display);
-  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
-  /* Article prose — Space Grotesk */
-  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Geist Sans", system-ui, sans-serif;
+  --font-body: "Geist Sans", system-ui, sans-serif;
+
+  --weight-body: 400;
+  --weight-chrome: 500;
+  --weight-display: 500;
 
   --track-tight: 0.03em;
   --track-wide: 0.14em;
@@ -74,6 +92,7 @@ body {
   background: #000;
   color: var(--fg);
   font-family: var(--font-mono); /* chrome / UI — not article prose */
+  font-weight: var(--weight-chrome);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -140,7 +159,7 @@ a:hover {
   grid-column: 2;
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 2.5vw, 2rem);
-  font-weight: 400;
+  font-weight: var(--weight-display);
   letter-spacing: var(--track-tight);
   text-decoration: none;
   text-transform: uppercase;
@@ -304,7 +323,7 @@ a:hover {
 
 .title-card__series {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: var(--weight-display);
   font-size: clamp(2.75rem, 10vw, 6.5rem);
   line-height: 0.88;
   letter-spacing: var(--track-tight);
@@ -350,7 +369,7 @@ a:hover {
 .title-card__title {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 5.5vw, 3.25rem);
-  font-weight: 400;
+  font-weight: var(--weight-display);
   line-height: 0.95;
   letter-spacing: var(--track-tight);
   text-transform: uppercase;
@@ -447,71 +466,110 @@ a.card-link:hover {
   max-width: 36ch;
 }
 
-/* Article feed */
+/*
+ * Issue feed / TOC — ordinary zine/magazine contents.
+ * Title left · dotted leader · episode no. right; quiet dek under the title.
+ */
 .feed {
   list-style: none;
-  margin: 0 0 var(--space-xl);
-  padding: 0;
+  margin: 0 auto;
+  padding: 0.25rem 0 0;
+  max-width: var(--measure);
+  width: 100%;
 }
 
 .feed li {
   margin: 0;
-  padding: var(--space-md) 0;
-  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
-}
-
-.feed li:first-child {
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
+  padding: 0;
+  border: none;
 }
 
 .feed a {
   text-decoration: none;
-  display: grid;
-  gap: 0.35rem;
+  color: inherit;
+  display: block;
+  padding: 0.75rem 0;
+  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
+}
+
+.feed li:first-child a {
+  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
 }
 
 .feed a:hover {
-  opacity: 0.7;
+  opacity: 0.75;
   text-decoration: none;
 }
 
 .feed a:hover .feed__title {
   text-decoration: underline;
-  text-underline-offset: 0.15em;
+  text-underline-offset: 0.12em;
 }
 
-.feed__ep {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
-  opacity: 0.55;
+/* Title ........ 01 */
+.feed__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .feed__title {
+  flex: 0 1 auto;
+  max-width: calc(100% - 4.5rem);
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: var(--weight-display);
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
   text-transform: uppercase;
   letter-spacing: var(--track-tight);
-  line-height: 0.95;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.feed__leader {
+  flex: 1 1 auto;
+  min-width: 1.25rem;
+  height: 0;
+  border-bottom: 0.05rem dotted color-mix(in srgb, var(--fg) 40%, transparent);
+  transform: translateY(-0.35em);
+  opacity: 0.7;
+}
+
+.feed__ep {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  opacity: 0.55;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
 .feed__dek {
-  font-size: 0.9rem;
-  opacity: 0.75;
-  max-width: 40ch;
+  display: block;
+  margin: 0.2rem 0 0;
+  padding-right: 3rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: var(--weight-body);
+  opacity: 0.55;
+  max-width: 38ch;
   text-transform: none;
+  line-height: 1.4;
+  text-align: left;
+  letter-spacing: 0.01em;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Article body — poster field + calm column                                  */
+/* Poster field — articles + home TOC + colophon                              */
 /* -------------------------------------------------------------------------- */
 
 /*
- * Poster chrome (uniform, not chaotic):
- *   frame border · corner marks · top/footer rails · hairline breaks
- * Content stays one measure, left-aligned. Plates: freeform stage + caption under.
+ * Shared zine panel: frame · corner marks · rails · hairlines.
+ * Use on <main class="shell article-body"> (articles, about, home contents).
  */
 .article-body {
   position: relative;
@@ -523,11 +581,33 @@ a.card-link:hover {
     clamp(1rem, 3vw, 2rem)
     var(--space-2xl);
   font-family: var(--font-body);
+  font-weight: var(--weight-body);
   font-size: 1.05rem;
   line-height: var(--lh-body);
   letter-spacing: 0.01em;
   border: 0.05rem solid color-mix(in srgb, var(--fg) 32%, transparent);
   box-sizing: border-box;
+}
+
+/*
+ * Full sheet — homepage contents (and optional single-panel pages).
+ * Min height ≈ portrait paper / viewport page so the frame reads as a leaf.
+ */
+.article-body--sheet {
+  min-height: max(
+    calc(100dvh - 6rem),
+    calc(min(var(--shell), 100%) * 1.294)
+  ); /* ~A4 portrait ratio vs panel width, or near full viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+.article-body--sheet > .feed {
+  flex: 1 1 auto;
+}
+
+.article-body--sheet > .poster-rail--footer {
+  margin-top: auto;
 }
 
 /* Corner registration marks — same glyph on every corner */
@@ -632,7 +712,9 @@ a.card-link:hover {
   .endnote,
   .prose,
   .pull,
-  .passage
+  .passage,
+  .feed,
+  .kicker
 ) {
   max-width: var(--measure);
   width: 100%;
@@ -643,6 +725,12 @@ a.card-link:hover {
   max-width: none;
   width: 100%;
   margin-inline: 0;
+}
+
+/* Home / panel kickers align with article display */
+.article-body > .kicker {
+  text-align: center;
+  margin-bottom: var(--space-md);
 }
 
 .article-body > p,
@@ -691,12 +779,12 @@ a.card-link:hover {
   opacity: 0.75;
 }
 
-/* Display type — Instrument Serif, centered (not the open title-card) */
+/* Display type — Geist weight variation, centered (not the open title-card) */
 .article-body h1,
 .article-body h2,
 .article-body h3 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: var(--weight-display);
   letter-spacing: var(--track-tight);
   text-transform: uppercase;
   line-height: 0.95;
@@ -808,6 +896,7 @@ a.card-link:hover {
 /* Standfirst — display block, centered (article only, not open title-card) */
 .standfirst {
   font-family: var(--font-display);
+  font-weight: var(--weight-display);
   font-size: clamp(2rem, 6.5vw, 3.75rem);
   line-height: 0.95;
   letter-spacing: var(--track-tight);
@@ -838,6 +927,7 @@ a.card-link:hover {
 /* Pull — centered quote, same hairline language as h2 */
 .pull {
   font-family: var(--font-display);
+  font-weight: var(--weight-display);
   font-size: clamp(1.45rem, 3.2vw, 2.1rem);
   line-height: 1.15;
   letter-spacing: var(--track-tight);
@@ -1178,7 +1268,7 @@ a.card-link:hover {
   display: block;
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-  font-weight: 400;
+  font-weight: var(--weight-display);
   letter-spacing: var(--track-tight);
   text-transform: uppercase;
   line-height: 0.95;
@@ -1262,16 +1352,16 @@ a.card-link:hover {
 /* -------------------------------------------------------------------------- */
 
 .site-footer {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-lg);
   padding: var(--space-md) 0 var(--space-xl);
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
+  border-top: none;
   text-align: center;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   font-weight: 500;
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
-  opacity: 0.65;
+  opacity: 0.55;
 }
 
 .site-footer p {

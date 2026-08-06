@@ -6,13 +6,7 @@
     <title>VERSO — Issue 01</title>
     <meta
       name="description"
-      content="A webzine starter: concrete.css base, Evangelion title cards, Hermes-inspired chrome."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap"
-      rel="stylesheet"
+      content="Verso Issue 01 — title card open, zine contents in a poster frame."
     />
     <link rel="stylesheet" href="css/concrete.min.css" />
     <link rel="stylesheet" href="css/theme.css" />
@@ -23,7 +17,7 @@
         <a class="mark" href="index.html">Verso</a>
         <nav aria-label="Primary">
           <ul>
-            <li><a href="index.html">Issues</a></li>
+            <li><a href="index.html" aria-current="page">Issues</a></li>
             <li><a href="articles/angel-attack.html">Sample</a></li>
             <li><a href="articles/the-beast.html">Test</a></li>
             <li><a href="about.html">About</a></li>
@@ -32,8 +26,7 @@
       </header>
     </div>
 
-    <!-- Issue open: Eva-style title card for the whole book -->
-    <div class="title-card" role="banner">
+    <header class="title-card" role="banner">
       <p class="title-card__series" aria-label="Verso Issue One">
         <span>Verso</span>
         <span>Issue</span>
@@ -43,107 +36,68 @@
         <p class="title-card__episode">Episode&nbsp;: 01</p>
         <p class="title-card__title">First Contact</p>
       </div>
-    </div>
+    </header>
 
-    <main class="shell">
-      <section>
-        <p class="kicker">A classless webzine starter</p>
-        <p class="lede">
-          Built on
-          <a href="https://github.com/louismerlin/concrete.css">concrete.css</a>,
-          with title cards cut from Neon Genesis Evangelion and layout grammar
-          from
-          <a href="https://hermes-agent.nousresearch.com/">Hermes</a>
-          — centered mark, mono eyebrows, monumental type — on a single black
-          field. Semantic HTML first; almost no classes required for body copy.
-        </p>
-        <p>
-          <a class="btn" href="articles/angel-attack.html">Read the sample</a>
-          &nbsp;
-          <a class="btn btn--ghost" href="about.html">How it works</a>
-        </p>
-      </section>
+    <main class="shell article-body article-body--sheet">
+      <div class="poster-frame" aria-hidden="true">
+        <span class="plate__mark plate__mark--tl"></span>
+        <span class="plate__mark plate__mark--tr"></span>
+        <span class="plate__mark plate__mark--bl"></span>
+        <span class="plate__mark plate__mark--br"></span>
+      </div>
 
-      <section>
-        <p class="kicker">This issue</p>
-        <ul class="feed">
-          <li>
-            <a href="articles/angel-attack.html">
-              <span class="feed__ep">Episode : 01</span>
+      <div class="poster-rail">
+        <p>Issue 01 · Verso</p>
+        <p>Contents</p>
+        <p class="poster-rail__end">3 pieces</p>
+      </div>
+
+      <ul class="feed">
+        <li>
+          <a href="articles/angel-attack.html">
+            <span class="feed__row">
               <span class="feed__title">Angel Attack</span>
-              <span class="feed__dek"
-                >A sample piece demonstrating the title card, byline, and drop
-                cap on concrete’s measure.</span
-              >
-            </a>
-          </li>
-          <li>
-            <a href="articles/the-beast.html">
-              <span class="feed__ep">Episode : 02</span>
+              <span class="feed__leader" aria-hidden="true"></span>
+              <span class="feed__ep">01</span>
+            </span>
+            <span class="feed__dek"
+              >Sample — plate rhythm and pattern notes.</span
+            >
+          </a>
+        </li>
+        <li>
+          <a href="articles/the-beast.html">
+            <span class="feed__row">
               <span class="feed__title">The Beast</span>
-              <span class="feed__dek"
-                >Poster scroll, refined — one column, freeform plates, type
-                under images.</span
-              >
-            </a>
-          </li>
-          <li>
-            <a href="articles/angel-attack.html#placeholder">
-              <span class="feed__ep">Episode : 03</span>
+              <span class="feed__leader" aria-hidden="true"></span>
+              <span class="feed__ep">02</span>
+            </span>
+            <span class="feed__dek"
+              >Field report — poster field and freeform plates.</span
+            >
+          </a>
+        </li>
+        <li>
+          <a href="articles/angel-attack.html#placeholder">
+            <span class="feed__row">
               <span class="feed__title">A Transfer</span>
-              <span class="feed__dek"
-                >Stub entry — replace with your third article.</span
-              >
-            </a>
-          </li>
-        </ul>
-      </section>
+              <span class="feed__leader" aria-hidden="true"></span>
+              <span class="feed__ep">03</span>
+            </span>
+            <span class="feed__dek">Stub — replace with your third piece.</span>
+          </a>
+        </li>
+      </ul>
 
-      <section>
-        <p class="kicker">What you get</p>
-        <ul class="features">
-          <li class="feature">
-            <p class="feature__n">#1 Base</p>
-            <h3>Concrete</h3>
-            <p>
-              Classless CSS: JetBrains Mono body, square bullets, ~640px measure.
-              Drop in HTML and it already looks finished.
-            </p>
-          </li>
-          <li class="feature">
-            <p class="feature__n">#2 Titles</p>
-            <h3>Title cards</h3>
-            <p>
-              Stacked display type, mono episode labels split left and right —
-              the NGE card as a reusable pattern on the same black field.
-            </p>
-          </li>
-          <li class="feature">
-            <p class="feature__n">#3 Chrome</p>
-            <h3>Hermes notes</h3>
-            <p>
-              Centered wordmark, uppercase mono eyebrows, wide tracking, open
-              feature blocks — Hermes structure without the blue.
-            </p>
-          </li>
-          <li class="feature">
-            <p class="feature__n">#4 Form</p>
-            <h3>Starter pages</h3>
-            <p>
-              Home, article, and about. Copy a card, rename an episode, ship an
-              issue before the photographs arrive.
-            </p>
-          </li>
-        </ul>
-      </section>
+      <div class="poster-rail poster-rail--footer">
+        <p>Verso · Issue 01</p>
+        <p>First Contact</p>
+        <p class="poster-rail__end"><a href="about.html">Colophon</a></p>
+      </div>
     </main>
 
     <footer class="shell site-footer">
       <p>Verso — webzine starter</p>
-      <p>
-        concrete.css · NGE title cards · Hermes structure ·
-        <a href="about.html">colophon</a>
-      </p>
     </footer>
   </body>
 </html>

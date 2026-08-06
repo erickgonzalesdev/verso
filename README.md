@@ -63,7 +63,7 @@ is overridden so the page stays black. Tokens live at the top of `css/theme.css`
 
 1. **Keep concrete classless for prose.** Theme classes are for cards, feed, and chrome only.
 2. **One measure.** Don’t widen the reading column without a reason; title cards already go full-bleed.
-3. **Type roles.** Space Grotesk = article body; Instrument Serif = title cards / standfirst / plate titles; JetBrains Mono = nav/kickers/rails/code.
+3. **Type (trial).** Geist Sans sitewide (local variable font); hierarchy by weight. Revert via git if needed.
 4. **Articles are poster fields.** Frame, corner marks, top/footer rails, hairline breaks; one reading measure; freeform `.plate__stage` for cutout PNGs.
 4. **Stay monochrome.** Hover is underline or invert; don’t reintroduce a brand blue unless the issue asks for it.
 

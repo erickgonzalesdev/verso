@@ -4,12 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>About · Verso</title>
-    <meta name="description" content="Colophon and design notes for the Verso webzine starter." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="Colophon and design notes for the Verso webzine starter."
     />
     <link rel="stylesheet" href="css/concrete.min.css" />
     <link rel="stylesheet" href="css/theme.css" />
@@ -29,7 +26,7 @@
       </header>
     </div>
 
-    <div class="title-card title-card--compact">
+    <header class="title-card title-card--compact">
       <p class="title-card__series">
         <span>About</span>
         <span>This</span>
@@ -39,17 +36,32 @@
         <p class="title-card__episode">Colophon</p>
         <p class="title-card__title">Verso</p>
       </div>
-    </div>
+    </header>
 
     <main class="shell article-body">
-      <p class="byline">Design notes · No build step</p>
+      <div class="poster-frame" aria-hidden="true">
+        <span class="plate__mark plate__mark--tl"></span>
+        <span class="plate__mark plate__mark--tr"></span>
+        <span class="plate__mark plate__mark--bl"></span>
+        <span class="plate__mark plate__mark--br"></span>
+      </div>
+
+      <div class="poster-rail">
+        <p>Verso · Starter</p>
+        <p>Colophon</p>
+        <p class="poster-rail__end">No build step</p>
+      </div>
+
+      <p class="byline">Design notes · Static webzine</p>
 
       <p>
         <strong>Verso</strong> is a static webzine starter sitting next to
         RECTO. Where RECTO is an Astro theme with tokens and two settings, Verso
-        is the opposite edge of the page: classless HTML, one measure, and a
-        title card you can paste.
+        is the opposite edge of the page: classless HTML, one measure, a title
+        card you can paste, and a poster field for issue contents and articles.
       </p>
+
+      <hr />
 
       <h2>Stack</h2>
       <ul>
@@ -57,33 +69,36 @@
           <a href="https://github.com/louismerlin/concrete.css">concrete.css</a>
           3.1 — classless base (vendored in <code>css/concrete.min.css</code>)
         </li>
-        <li><code>css/theme.css</code> — title cards, feed, features, black field</li>
         <li>
-          <a href="https://fonts.google.com/specimen/Instrument+Serif">Instrument Serif</a>
-          — title cards, standfirst, poster bands, type on plates
+          <code>css/theme.css</code> — title cards, poster field, plate rhythm,
+          black field
         </li>
         <li>
-          <a href="https://fonts.google.com/specimen/Space+Grotesk">Space Grotesk</a>
-          — article body (readable column)
-        </li>
-        <li>
-          <a href="https://fonts.google.com/specimen/JetBrains+Mono">JetBrains Mono</a>
-          — episode labels, nav, kickers, code
+          <a href="https://vercel.com/font">Geist Sans</a>
+          — sitewide type trial (weight variations only)
         </li>
       </ul>
+
+      <hr />
 
       <h2>References</h2>
       <ul>
         <li>
-          Neon Genesis Evangelion title cards (series mark stacked; episode left;
-          title right on black)
+          Neon Genesis Evangelion title cards (series mark stacked; episode
+          left; title right on black)
         </li>
         <li>
           <a href="https://hermes-agent.nousresearch.com/">Hermes Agent</a>
-          — centered mark, uppercase mono eyebrows, monumental display, open
-          sections (structure only; field stays black)
+          — centered mark, mono eyebrows, open sections (structure only; field
+          stays black)
+        </li>
+        <li>
+          Editorial poster grammar — frame, corner marks, rails, hairline
+          breaks
         </li>
       </ul>
+
+      <hr />
 
       <h2>Colour</h2>
       <p>
@@ -92,14 +107,19 @@
         and title card. Tokens live at the top of <code>theme.css</code>.
       </p>
 
+      <hr />
+
       <h2>Run locally</h2>
       <pre><code>cd verso
-npm install
 npm run dev
 # → http://localhost:4173</code></pre>
       <p>Or any static server pointed at this directory.</p>
 
-      <p><a href="index.html">← Home</a></p>
+      <div class="poster-rail poster-rail--footer">
+        <p>Verso · Colophon</p>
+        <p>Issue 01</p>
+        <p class="poster-rail__end"><a href="index.html">← Home</a></p>
+      </div>
     </main>
 
     <footer class="shell site-footer">
