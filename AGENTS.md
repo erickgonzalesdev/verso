@@ -64,8 +64,7 @@ Title ····························· 01
 | Article body prose | **Geist Sans** (`--font-body`, weight 400) |
 | Nav, kickers, bylines, rails, captions, code | **Geist Sans** (`--font-mono`, weight 500) |
 
-**TYPE TRIAL:** entire site on local Geist Sans (`assets/fonts/geist/`, `@font-face` in `theme.css`). Hierarchy is weight only.  
-**Revert:** `git checkout HEAD -- css/theme.css index.html about.html articles/*.html AGENTS.md CLAUDE.md README.md` (and drop `assets/fonts/geist/` if desired), or restore the previous multi-family tokens + Google Fonts `<link>`s.
+**TYPE TRIAL:** entire site on local Geist Sans (`assets/fonts/geist/Geist-Variable.woff2`, `@font-face` in `theme.css`). Hierarchy is weight only (`--weight-body` 400, `--weight-chrome` / `--weight-display` 500). No Google Fonts required while the trial is active.
 
 ## Title card pattern (episode open)
 
