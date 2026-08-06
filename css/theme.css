@@ -2,15 +2,15 @@
  * verso — concrete.css + Evangelion title cards + Hermes structure
  *
  * One field: pure black. No blue, no gray bands.
- * Hermes contributes layout grammar (centered mark, mono eyebrows,
- * uppercase chrome, monumental display) — not its blue.
+ * TYPE TRIAL: Geist Sans sitewide (weight hierarchy only).
  *
- * TYPE TRIAL: entire site on Geist Sans (weight variations only).
- * Revert: restore previous --font-* tokens + Google Fonts <link>s from git.
+ * Sections:
+ *   tokens → base → masthead → title-card → feed → poster field
+ *   → article type → plate rhythm → footer → utilities
  */
 
 /* -------------------------------------------------------------------------- */
-/* Geist Sans (local) — single family sitewide                                */
+/* Face                                                                       */
 /* -------------------------------------------------------------------------- */
 
 @font-face {
@@ -26,19 +26,17 @@
 /* -------------------------------------------------------------------------- */
 
 :root {
-  /* Force monochrome black field — overrides concrete light/dark */
   --fg: #f5f5f5;
   --bg: #000;
 
-  /* concrete.css: --font (body), --font-h (h1–h6) — kill Helvetica */
-  --font: "Geist Sans", system-ui, sans-serif;
-  --font-h: "Geist Sans", system-ui, sans-serif;
-
-  /* Trial: all roles = Geist Sans; hierarchy via weight only */
-  --font-display: "Geist Sans", system-ui, sans-serif;
+  /* Sitewide Geist — roles kept for semantics / easy multi-face restore */
+  --font-sans: "Geist Sans", system-ui, sans-serif;
+  --font: var(--font-sans);
+  --font-h: var(--font-sans);
+  --font-display: var(--font-sans);
+  --font-body: var(--font-sans);
+  --font-mono: var(--font-sans);
   --font-poster: var(--font-display);
-  --font-mono: "Geist Sans", system-ui, sans-serif;
-  --font-body: "Geist Sans", system-ui, sans-serif;
 
   --weight-body: 400;
   --weight-chrome: 500;
@@ -55,25 +53,22 @@
   --space-xl: 5.6rem;
   --space-2xl: 8rem;
 
-  --measure: 38rem; /* ~ reading column for zine body */
-  --measure-wide: 52rem; /* span figures / pull quotes */
+  --measure: 38rem;
+  --measure-wide: 52rem;
   --shell: min(72rem, calc(100% - 2.5rem));
   --gutter: clamp(1.25rem, 6vw, 5.5rem);
 
-  /* Vertical rhythm — 8px-ish steps at concrete's 1.25rem root */
   --lh-body: 1.65;
   --rhythm: 1.65rem;
+
+  --hairline: 0.05rem solid color-mix(in srgb, var(--fg) 32%, transparent);
+  --hairline-soft: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
+  --float-max: min(15rem, 46%);
+  --bp-float: 40rem;
 }
 
-/* concrete respects --fg/--bg; pin them even if OS is light */
-@media (prefers-color-scheme: light) {
-  :root {
-    --fg: #f5f5f5;
-    --bg: #000;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
+/* Pin monochrome regardless of OS scheme (concrete reads these) */
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
   :root {
     --fg: #f5f5f5;
     --bg: #000;
@@ -81,17 +76,17 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Base — single black field                                                  */
+/* Base                                                                       */
 /* -------------------------------------------------------------------------- */
 
 html {
-  background: #000;
+  background: var(--bg);
 }
 
 body {
-  background: #000;
+  background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-mono); /* chrome / UI — not article prose */
+  font-family: var(--font-mono);
   font-weight: var(--weight-chrome);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -105,7 +100,7 @@ body > footer {
 
 body.site {
   max-width: none;
-  background: #000;
+  background: var(--bg);
   overflow-x: clip;
 }
 
@@ -117,14 +112,11 @@ body.site > .shell {
   width: 100%;
 }
 
-/* Reading column: home sections stay narrow; articles use wider shell */
-.shell--measure,
 main.shell > section {
   max-width: var(--measure);
   margin-inline: auto;
 }
 
-/* Article main is wide so figures can break out of the measure */
 main.shell.article-body {
   max-width: var(--shell);
 }
@@ -139,8 +131,26 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Shared chrome type (nav, rails, captions, footers) */
+.chrome-type,
+.masthead nav a,
+.poster-rail,
+.byline,
+.endnote,
+.kicker,
+.feed__ep,
+.title-card__episode,
+.plate figcaption,
+.site-footer,
+.slot {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-chrome);
+  letter-spacing: var(--track-wider);
+  text-transform: uppercase;
+}
+
 /* -------------------------------------------------------------------------- */
-/* Masthead — Hermes three-up: left / mark / right                            */
+/* Masthead                                                                   */
 /* -------------------------------------------------------------------------- */
 
 .masthead {
@@ -151,7 +161,6 @@ a:hover {
   padding-top: var(--space-lg);
   padding-bottom: var(--space-md);
   margin-bottom: 0;
-  border-bottom: none;
   background: transparent;
 }
 
@@ -189,11 +198,7 @@ a:hover {
 }
 
 .masthead nav a {
-  font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   text-decoration: none;
 }
 
@@ -217,7 +222,7 @@ a:hover {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Eva title card — same black as the page, no band                           */
+/* Title card (episode / issue open)                                          */
 /* -------------------------------------------------------------------------- */
 
 .title-card {
@@ -235,90 +240,9 @@ a:hover {
   font-size: 1rem;
 }
 
-/* Align card type with shell when inside a wide page */
-.title-card__inner {
-  width: 100%;
-  max-width: var(--shell);
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  min-height: inherit;
-}
-
 .title-card--compact {
   min-height: auto;
   padding-block: var(--space-xl);
-}
-
-/*
- * In-article Eva card — same grammar as the open card (stacked series +
- * episode left / title right), sized for the reading column / passage body.
- * Use this for section peaks, pulls, and impact beats — do not fake it with
- * oversized plain headings.
- */
-.title-card--inline {
-  min-height: 0;
-  max-width: var(--measure-wide);
-  width: 100%;
-  margin: var(--space-xl) auto;
-  padding: var(--space-lg) 0;
-  justify-content: flex-start;
-}
-
-.title-card--inline > .title-card__series,
-.title-card--inline > .title-card__meta {
-  max-width: none;
-  width: 100%;
-  margin-inline: 0;
-}
-
-.title-card--inline .title-card__series {
-  font-size: clamp(2.25rem, 8vw, 4.75rem);
-  margin-bottom: var(--space-lg);
-}
-
-.title-card--inline .title-card__meta {
-  margin-top: 0;
-  padding-top: var(--space-md);
-}
-
-.title-card--inline .title-card__title {
-  font-size: clamp(1.35rem, 3.8vw, 2.35rem);
-}
-
-/* Nested in a float passage: keep the grammar, compress the scale */
-.passage__body > .title-card--inline {
-  margin: 0 0 var(--space-md);
-  padding: 0;
-  max-width: none;
-}
-
-@media (min-width: 40rem) {
-  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__series,
-  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__series,
-  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__series,
-  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__series {
-    font-size: clamp(1.45rem, 2.6vw, 2rem);
-    margin-bottom: var(--space-sm);
-    max-width: none;
-  }
-
-  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__title,
-  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__title,
-  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__title,
-  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__title {
-    font-size: clamp(1rem, 1.8vw, 1.25rem);
-    max-width: 12ch;
-  }
-
-  .article-body > section.passage:nth-of-type(3n + 2) .passage__body > .title-card--inline .title-card__episode,
-  .article-body > section.passage:nth-of-type(3n + 3) .passage__body > .title-card--inline .title-card__episode,
-  .article-body > section.passage.passage--float-right .passage__body > .title-card--inline .title-card__episode,
-  .article-body > section.passage.passage--float-left .passage__body > .title-card--inline .title-card__episode {
-    font-size: 0.58rem;
-  }
 }
 
 .title-card__series {
@@ -336,6 +260,79 @@ a:hover {
   display: block;
 }
 
+/* Load entrance — soft zoom + rise; series lines stagger slightly */
+@media (prefers-reduced-motion: no-preference) {
+  .title-card {
+    animation: title-card-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .title-card__series span {
+    animation: title-card-line-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .title-card__series span:nth-child(1) {
+    animation-delay: 0.06s;
+  }
+
+  .title-card__series span:nth-child(2) {
+    animation-delay: 0.14s;
+  }
+
+  .title-card__series span:nth-child(3) {
+    animation-delay: 0.22s;
+  }
+
+  .title-card__series span:nth-child(n + 4) {
+    animation-delay: 0.28s;
+  }
+
+  .title-card__meta {
+    animation: title-card-meta-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+  }
+}
+
+@keyframes title-card-in {
+  from {
+    opacity: 0.35;
+    transform: scale(0.96) translateY(1.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes title-card-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.85rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes title-card-meta-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.65rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title-card > .title-card__series {
+  max-width: var(--shell);
+  width: 100%;
+  margin-inline: auto;
+}
+
 .title-card__meta {
   display: flex;
   flex-wrap: wrap;
@@ -349,19 +346,8 @@ a:hover {
   margin-inline: auto;
 }
 
-/* When series is direct child (no inner wrapper), meta still spans */
-.title-card > .title-card__series {
-  max-width: var(--shell);
-  width: 100%;
-  margin-inline: auto;
-}
-
 .title-card__episode {
-  font-family: var(--font-mono);
   font-size: clamp(0.7rem, 1.6vw, 0.9rem);
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   margin: 0;
   opacity: 0.85;
 }
@@ -378,97 +364,12 @@ a:hover {
   max-width: 16ch;
 }
 
-a.card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  margin-bottom: var(--space-md);
-}
-
-a.card-link:hover {
-  color: inherit;
-  opacity: 0.75;
-}
-
 /* -------------------------------------------------------------------------- */
-/* Issue / home                                                               */
+/* Issue feed / TOC                                                           */
 /* -------------------------------------------------------------------------- */
-
-.kicker {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
-  margin: 0 0 var(--space-sm);
-  opacity: 0.65;
-}
-
-.lede {
-  font-size: 1.05rem;
-  line-height: 1.45;
-  max-width: 34ch;
-  margin: 0 0 var(--space-lg);
-  text-transform: none;
-}
-
-/* Hermes feature grammar: numbered mono + large display, open field */
-.features {
-  display: grid;
-  gap: var(--space-lg) var(--space-md);
-  margin: var(--space-2xl) 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 48rem) {
-  .features {
-    grid-template-columns: 1fr 1fr;
-    max-width: none;
-  }
-
-  main.shell > section:has(.features) {
-    max-width: var(--shell);
-  }
-}
-
-.feature {
-  border: none;
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 35%, transparent);
-  padding: var(--space-md) 0 0;
-  background: transparent;
-}
-
-.feature__n {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
-  opacity: 0.55;
-  margin: 0 0 var(--space-sm);
-}
-
-.feature h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: var(--track-tight);
-  line-height: 0.95;
-  margin: 0 0 var(--space-sm);
-}
-
-.feature p {
-  margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.85;
-  max-width: 36ch;
-}
 
 /*
- * Issue feed / TOC — ordinary zine/magazine contents.
- * Title left · dotted leader · episode no. right; quiet dek under the title.
+ * Print contents: Title ····· 01 + quiet dek.
  */
 .feed {
   list-style: none;
@@ -489,11 +390,11 @@ a.card-link:hover {
   color: inherit;
   display: block;
   padding: 0.75rem 0;
-  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
+  border-bottom: var(--hairline-soft);
 }
 
 .feed li:first-child a {
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
+  border-top: var(--hairline-soft);
 }
 
 .feed a:hover {
@@ -506,7 +407,6 @@ a.card-link:hover {
   text-underline-offset: 0.12em;
 }
 
-/* Title ........ 01 */
 .feed__row {
   display: flex;
   align-items: baseline;
@@ -538,11 +438,8 @@ a.card-link:hover {
 
 .feed__ep {
   flex: 0 0 auto;
-  font-family: var(--font-mono);
   font-size: 0.68rem;
-  font-weight: 500;
   letter-spacing: var(--track-wide);
-  text-transform: uppercase;
   opacity: 0.55;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -555,22 +452,18 @@ a.card-link:hover {
   font-family: var(--font-body);
   font-size: 0.88rem;
   font-weight: var(--weight-body);
+  letter-spacing: 0.01em;
   opacity: 0.55;
   max-width: 38ch;
   text-transform: none;
   line-height: 1.4;
   text-align: left;
-  letter-spacing: 0.01em;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Poster field — articles + home TOC + colophon                              */
+/* Poster field (articles, home sheet, about)                                 */
 /* -------------------------------------------------------------------------- */
 
-/*
- * Shared zine panel: frame · corner marks · rails · hairlines.
- * Use on <main class="shell article-body"> (articles, about, home contents).
- */
 .article-body {
   position: relative;
   max-width: var(--shell);
@@ -585,19 +478,45 @@ a.card-link:hover {
   font-size: 1.05rem;
   line-height: var(--lh-body);
   letter-spacing: 0.01em;
-  border: 0.05rem solid color-mix(in srgb, var(--fg) 32%, transparent);
+  border: var(--hairline);
   box-sizing: border-box;
+  transform-origin: center top;
 }
 
 /*
- * Full sheet — homepage contents (and optional single-panel pages).
- * Min height ≈ portrait paper / viewport page so the frame reads as a leaf.
+ * Scroll-linked arrive: panel zooms / rises into place while scrolling.
+ * Primary path — no CDN, works on article pages (Beast) and home.
+ * Falls back to js/motion.js scroll() when view timelines unsupported.
  */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .article-body {
+      animation: article-panel-scroll linear both;
+      animation-timeline: view();
+      /* scrub from first entry until the panel is well into the viewport */
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+
+@keyframes article-panel-scroll {
+  from {
+    opacity: 0.15;
+    transform: scale(0.88) translateY(5.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Full-sheet leaf (homepage contents) */
 .article-body--sheet {
   min-height: max(
     calc(100dvh - 6rem),
     calc(min(var(--shell), 100%) * 1.294)
-  ); /* ~A4 portrait ratio vs panel width, or near full viewport */
+  );
   display: flex;
   flex-direction: column;
 }
@@ -610,7 +529,7 @@ a.card-link:hover {
   margin-top: auto;
 }
 
-/* Corner registration marks — same glyph on every corner */
+/* Corner marks */
 .article-body > .poster-frame {
   position: absolute;
   inset: 0;
@@ -653,7 +572,7 @@ a.card-link:hover {
 .plate__mark--bl { bottom: 0.55rem; left: 0.55rem; }
 .plate__mark--br { bottom: 0.55rem; right: 0.55rem; }
 
-/* Top + footer rails — full width of the frame, mono, three slots */
+/* Rails */
 .poster-rail {
   display: grid;
   grid-template-columns: 1fr;
@@ -663,11 +582,7 @@ a.card-link:hover {
   margin: 0 0 var(--space-lg);
   padding: 0 0 0.7rem;
   border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
-  font-family: var(--font-mono);
   font-size: clamp(0.55rem, 1.05vw, 0.68rem);
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   opacity: 0.7;
   line-height: 1.35;
 }
@@ -699,7 +614,7 @@ a.card-link:hover {
   border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
 }
 
-/* Content column + full-width chrome */
+/* Column measure for prose; full width for rails */
 .article-body > :where(
   p,
   h1, h2, h3, h4, h5, h6,
@@ -710,7 +625,6 @@ a.card-link:hover {
   .byline,
   .standfirst,
   .endnote,
-  .prose,
   .pull,
   .passage,
   .feed,
@@ -721,53 +635,39 @@ a.card-link:hover {
   margin-inline: auto;
 }
 
-.article-body > :where(.poster-rail) {
+.article-body > .poster-rail {
   max-width: none;
   width: 100%;
   margin-inline: 0;
 }
 
-/* Home / panel kickers align with article display */
 .article-body > .kicker {
   text-align: center;
   margin-bottom: var(--space-md);
+  font-size: 0.68rem;
+  opacity: 0.65;
 }
 
 .article-body > p,
-.prose > p,
 .passage__body > p {
   margin-block: 0 var(--rhythm);
 }
 
 .article-body > p.lede,
-.article-body > .standfirst + p,
-.prose > p.lede {
+.article-body > .standfirst + p {
   font-size: 1.1rem;
   line-height: 1.55;
 }
 
 .article-body > .standfirst + p::first-letter,
-.article-body > p.lede::first-letter,
-.prose > p.lede::first-letter {
+.article-body > p.lede::first-letter {
   font-family: var(--font-display);
   font-size: 3.2em;
   float: left;
   line-height: 0.8;
   padding: 0.05em 0.1em 0 0;
-  font-weight: 400;
+  font-weight: var(--weight-display);
   color: var(--fg);
-}
-
-.prose {
-  max-width: var(--measure);
-  width: 100%;
-  margin-inline: auto;
-}
-
-.prose::after {
-  content: "";
-  display: table;
-  clear: both;
 }
 
 .article-body a {
@@ -779,7 +679,7 @@ a.card-link:hover {
   opacity: 0.75;
 }
 
-/* Display type — Geist weight variation, centered (not the open title-card) */
+/* Display (centered) — not open title-card */
 .article-body h1,
 .article-body h2,
 .article-body h3 {
@@ -802,7 +702,7 @@ a.card-link:hover {
   margin: var(--space-xl) auto var(--space-md);
   padding: var(--space-md) 0;
   border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
-  border-bottom: 0.05rem solid color-mix(in srgb, var(--fg) 22%, transparent);
+  border-bottom: var(--hairline-soft);
 }
 
 .article-body h3 {
@@ -816,7 +716,7 @@ a.card-link:hover {
   margin: var(--space-md) auto var(--space-sm);
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  font-weight: 500;
+  font-weight: var(--weight-chrome);
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
   opacity: 0.7;
@@ -838,20 +738,12 @@ a.card-link:hover {
   color: color-mix(in srgb, var(--fg) 55%, transparent);
 }
 
-/* Full-width line breaks inside the poster frame */
 .article-body hr {
   border: none;
   border-top: 0.05rem solid color-mix(in srgb, var(--fg) 38%, transparent);
   margin: var(--space-xl) auto;
   max-width: none;
   width: 100%;
-}
-
-/* Short centered rule (optional class) */
-.article-body hr.rule-short {
-  max-width: 4rem;
-  margin-inline: auto;
-  border-top-color: color-mix(in srgb, var(--fg) 45%, transparent);
 }
 
 .article-body blockquote:not(.pull) {
@@ -872,7 +764,7 @@ a.card-link:hover {
 .article-body pre {
   margin: var(--space-md) auto var(--rhythm);
   padding: var(--space-sm) var(--space-md);
-  border: 0.05rem solid color-mix(in srgb, var(--fg) 30%, transparent);
+  border: var(--hairline);
   overflow-x: auto;
   font-size: 0.8rem;
   line-height: 1.45;
@@ -883,17 +775,12 @@ a.card-link:hover {
 }
 
 .byline {
-  font-family: var(--font-mono);
   font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   margin: 0 auto var(--space-md);
   opacity: 0.55;
   text-align: center;
 }
 
-/* Standfirst — display block, centered (article only, not open title-card) */
 .standfirst {
   font-family: var(--font-display);
   font-weight: var(--weight-display);
@@ -912,19 +799,16 @@ a.card-link:hover {
 }
 
 .endnote {
-  font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: var(--track-wide);
-  text-transform: uppercase;
   opacity: 0.55;
   margin: var(--space-xl) auto 0;
   padding-top: var(--space-md);
-  border-top: 0.05rem solid color-mix(in srgb, var(--fg) 25%, transparent);
+  border-top: var(--hairline-soft);
   max-width: var(--measure);
   text-align: center;
 }
 
-/* Pull — centered quote, same hairline language as h2 */
 .pull {
   font-family: var(--font-display);
   font-weight: var(--weight-display);
@@ -948,7 +832,7 @@ a.card-link:hover {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   font-style: normal;
-  font-weight: 500;
+  font-weight: var(--weight-chrome);
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
   margin-top: var(--space-sm);
@@ -956,36 +840,14 @@ a.card-link:hover {
   text-align: center;
 }
 
-/* Legacy impact line — centered with other display beats */
-.impact {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
-  line-height: 1.2;
-  letter-spacing: var(--track-tight);
-  margin: 0 auto var(--rhythm);
-  max-width: var(--measure);
-  text-wrap: pretty;
-  text-align: center;
-}
-
 /* -------------------------------------------------------------------------- */
-/* Plate rhythm — universal article image framework                           */
+/* Plate rhythm                                                               */
 /* -------------------------------------------------------------------------- */
 
 /*
- * Every image moment is a <section class="passage">.
- * Passages cycle automatically (nth-of-type among sections only):
- *
- *   1, 4, 7…  → inset          (full measure block)
- *   2, 5, 8…  → float right    (wrap text in .passage__body)
- *   3, 6, 9…  → float left
- *
- * Intervening <p>/<h2> do not reset the count — only <section> elements do.
- *
- * Escape hatches (opt out of the cycle):
- *   .passage--inset | --float-right | --float-left   explicit beat
- *   .passage--span  | .passage--fill                 wider block (always inset-like)
- *   .pair                                            equal columns (outside rhythm)
+ * section.passage cycle (nth-of-type among sections only):
+ *   1,4,7… inset · 2,5,8… float right · 3,6,9… float left
+ * Escapes: .passage--inset | --float-right | --float-left | --span | --fill
  */
 
 .passage {
@@ -1002,14 +864,14 @@ a.card-link:hover {
 }
 
 .passage .plate {
+  display: block;
   margin: 0;
   width: 100%;
 }
 
 /*
- * Wrapping copy for float beats. Must NOT establish a BFC (no flow-root /
- * overflow:hidden) or text only sits beside the plate and leaves a hole under
- * a tall image. Normal flow lets line boxes wrap under the float.
+ * Float wrap body — must not create a BFC (no flow-root) so text can wrap
+ * under tall plates.
  */
 .passage__body {
   display: block;
@@ -1024,137 +886,92 @@ a.card-link:hover {
   margin-bottom: 0;
 }
 
-/* Keep figure caption inside the float box (under the image, not full-width) */
-.passage .plate {
-  display: block;
-}
-
 .passage .plate figcaption {
   display: block;
 }
 
-.passage__body > h2:first-child,
-.passage__body > h3:first-child {
-  margin-top: 0;
-}
-
-/* --- automatic cycle (section.passage siblings only via nth-of-type) ------ */
-
-/* Beat 1: inset */
-.article-body > section.passage:nth-of-type(3n + 1) .plate {
+/* Default: stacked full-width (mobile + inset baseline) */
+.article-body > section.passage .plate {
   float: none;
   max-width: 100%;
+  margin: 0 0 var(--space-sm);
+}
+
+.article-body > section.passage:nth-of-type(3n + 1) .plate,
+.article-body > section.passage.passage--inset .plate,
+.article-body > section.passage.passage--span .plate,
+.article-body > section.passage.passage--fill .plate {
   margin-bottom: 0;
 }
 
-.article-body > section.passage:nth-of-type(3n + 1) .passage__body {
-  margin-top: var(--space-md);
-}
-
-/* Beat 2: float right (stacked on small screens) */
-.article-body > section.passage:nth-of-type(3n + 2) .plate {
-  float: none;
-  max-width: 100%;
-  margin: 0 0 var(--space-sm);
-}
-
-/* Beat 3: float left */
-.article-body > section.passage:nth-of-type(3n + 3) .plate {
-  float: none;
-  max-width: 100%;
-  margin: 0 0 var(--space-sm);
-}
-
-@media (min-width: 40rem) {
-  .article-body > section.passage:nth-of-type(3n + 2) .plate {
-    float: right;
-    max-width: min(15rem, 46%);
-    margin: 0.1rem 0 var(--space-sm) var(--space-md);
-  }
-
-  .article-body > section.passage:nth-of-type(3n + 3) .plate {
-    float: left;
-    max-width: min(15rem, 46%);
-    margin: 0.1rem var(--space-md) var(--space-sm) 0;
-  }
-
-  .article-body > section.passage:nth-of-type(3n + 2) .passage__body,
-  .article-body > section.passage:nth-of-type(3n + 3) .passage__body {
-    margin-top: 0;
-  }
-}
-
-/* --- explicit beat overrides (win over nth) ------------------------------- */
-
-.article-body > section.passage.passage--inset .plate {
-  float: none !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-}
-
+.article-body > section.passage:nth-of-type(3n + 1) .passage__body,
 .article-body > section.passage.passage--inset .passage__body {
   margin-top: var(--space-md);
 }
 
-.article-body > section.passage.passage--float-right .plate,
-.article-body > section.passage.passage--float-left .plate {
-  float: none;
-  max-width: 100%;
-  margin: 0 0 var(--space-sm);
-}
-
 @media (min-width: 40rem) {
+  .article-body > section.passage:nth-of-type(3n + 2) .plate,
   .article-body > section.passage.passage--float-right .plate {
-    float: right !important;
-    max-width: min(15rem, 46%) !important;
-    margin: 0.1rem 0 var(--space-sm) var(--space-md) !important;
+    float: right;
+    max-width: var(--float-max);
+    margin: 0.1rem 0 var(--space-sm) var(--space-md);
   }
 
+  .article-body > section.passage:nth-of-type(3n + 3) .plate,
   .article-body > section.passage.passage--float-left .plate {
-    float: left !important;
-    max-width: min(15rem, 46%) !important;
-    margin: 0.1rem var(--space-md) var(--space-sm) 0 !important;
+    float: left;
+    max-width: var(--float-max);
+    margin: 0.1rem var(--space-md) var(--space-sm) 0;
   }
 
+  .article-body > section.passage:nth-of-type(3n + 2) .passage__body,
+  .article-body > section.passage:nth-of-type(3n + 3) .passage__body,
   .article-body > section.passage.passage--float-right .passage__body,
   .article-body > section.passage.passage--float-left .passage__body {
     margin-top: 0;
   }
+
+  /* Escapes must win over automatic nth when both could apply */
+  .article-body > section.passage.passage--inset .plate,
+  .article-body > section.passage.passage--span .plate,
+  .article-body > section.passage.passage--fill .plate {
+    float: none;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .article-body > section.passage.passage--float-right .plate {
+    float: right;
+    max-width: var(--float-max);
+    margin: 0.1rem 0 var(--space-sm) var(--space-md);
+  }
+
+  .article-body > section.passage.passage--float-left .plate {
+    float: left;
+    max-width: var(--float-max);
+    margin: 0.1rem var(--space-md) var(--space-sm) 0;
+  }
 }
 
-/* Span / fill: wider block passages (always non-float) */
 .passage--span {
   max-width: var(--measure-wide);
-}
-
-.article-body > section.passage.passage--span .plate,
-.article-body > section.passage.passage--fill .plate {
-  float: none !important;
-  max-width: 100% !important;
-  margin: 0 !important;
 }
 
 .passage--fill {
   max-width: 100%;
 }
 
-/* --- plate figure chrome -------------------------------------------------- */
+.article-body > section.passage.passage--span {
+  max-width: var(--measure-wide);
+}
 
-/*
- * Universal plate:
- *   .plate__stage  — freeform assets (cutout / irregular PNG, transparency)
- *   .plate__frame  — optional crop box (aspect-ratio + cover) for photos
- * Type always sits under the image (works for any shape).
- */
+/* --- plate chrome --------------------------------------------------------- */
+
 .plate {
   margin: var(--space-lg) auto;
   padding: 0;
   max-width: var(--measure);
   width: 100%;
-}
-
-.plate--inset {
-  max-width: var(--measure);
 }
 
 .plate--span {
@@ -1165,7 +982,7 @@ a.card-link:hover {
   max-width: 100%;
 }
 
-/* Freeform stage: no crop, no forced ratio, respects alpha */
+/* Freeform / cutout PNGs */
 .plate__stage {
   display: flex;
   justify-content: center;
@@ -1174,7 +991,8 @@ a.card-link:hover {
   background: transparent;
 }
 
-.plate__stage img {
+.plate__stage img,
+.plate > img {
   display: block;
   width: auto;
   max-width: 100%;
@@ -1184,7 +1002,11 @@ a.card-link:hover {
   background: transparent;
 }
 
-/* Optional rectangular crop (photos only — not for cutouts) */
+.plate > img {
+  margin-inline: auto;
+}
+
+/* Rectangular crop */
 .plate__frame {
   display: block;
   width: 100%;
@@ -1201,19 +1023,7 @@ a.card-link:hover {
   background: #111;
 }
 
-/* Bare img direct child of .plate */
-.plate > img {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: min(70vh, 36rem);
-  margin-inline: auto;
-  object-fit: contain;
-  background: transparent;
-}
-
-/* Staged empty slot — layout holds without a photograph */
+/* Empty slot */
 .slot {
   display: flex;
   align-items: center;
@@ -1228,11 +1038,7 @@ a.card-link:hover {
     );
   border: 0.05rem solid color-mix(in srgb, var(--fg) 18%, transparent);
   color: color-mix(in srgb, var(--fg) 40%, transparent);
-  font-family: var(--font-mono);
   font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   user-select: none;
 }
 
@@ -1240,16 +1046,9 @@ a.card-link:hover {
 .slot--portrait { aspect-ratio: 2 / 3; }
 .slot--wide { aspect-ratio: 16 / 9; }
 
-/*
- * Caption under every plate — same stack always:
- *   mono kicker (optional) → display title (optional) → credit line
- */
 .plate figcaption {
-  font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 400;
   letter-spacing: var(--track-wide);
-  text-transform: uppercase;
   text-align: center;
   border-bottom: none;
   padding: var(--space-sm) 0 0;
@@ -1287,80 +1086,15 @@ a.card-link:hover {
   font-size: 0.9em;
 }
 
-/* Span passages use the wide measure */
-.article-body > section.passage.passage--span {
-  max-width: var(--measure-wide);
-}
-
-/* Ad-hoc floats (outside rhythm) — prefer .passage */
-.plate--left,
-.plate--right {
-  max-width: min(15rem, 46%);
-  margin-top: 0.15rem;
-  margin-bottom: var(--space-sm);
-}
-
-@media (min-width: 40rem) {
-  .prose .plate--left {
-    float: left;
-    margin-right: var(--space-md);
-    clear: left;
-  }
-
-  .prose .plate--right {
-    float: right;
-    margin-left: var(--space-md);
-    clear: right;
-  }
-}
-
-/* Pair: equal columns (outside the passage rhythm) */
-.pair {
-  display: grid;
-  gap: var(--space-md);
-  margin: var(--space-lg) auto;
-  max-width: var(--measure-wide);
-  width: 100%;
-  align-items: center;
-}
-
-@media (min-width: 48rem) {
-  .pair {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-  }
-}
-
-.pair > .pair__text {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: var(--lh-body);
-  max-width: none;
-}
-
-.pair > .pair__text > :first-child {
-  margin-top: 0;
-}
-
-.pair .plate {
-  margin: 0;
-  max-width: none;
-}
-
 /* -------------------------------------------------------------------------- */
-/* Footer                                                                     */
+/* Footer + utilities                                                         */
 /* -------------------------------------------------------------------------- */
 
 .site-footer {
   margin-top: var(--space-lg);
   padding: var(--space-md) 0 var(--space-xl);
-  border-top: none;
   text-align: center;
-  font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: var(--track-wider);
-  text-transform: uppercase;
   opacity: 0.55;
 }
 
@@ -1376,10 +1110,6 @@ a.card-link:hover {
   text-decoration: underline;
   opacity: 1;
 }
-
-/* -------------------------------------------------------------------------- */
-/* Utilities                                                                  */
-/* -------------------------------------------------------------------------- */
 
 .sr-only {
   position: absolute;
@@ -1397,7 +1127,7 @@ a.card-link:hover {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  font-weight: 500;
+  font-weight: var(--weight-chrome);
   letter-spacing: var(--track-wider);
   text-transform: uppercase;
   text-decoration: none;

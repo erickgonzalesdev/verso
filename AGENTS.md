@@ -6,9 +6,22 @@ but deliberately lighter: no build, no components framework, classless HTML.
 ## Stack
 
 - **Base:** [concrete.css](https://github.com/louismerlin/concrete.css) 3.1, vendored at `css/concrete.min.css`
-- **Theme:** `css/theme.css` only — tokens, title cards, chrome, article poster field, plate rhythm
+- **Theme:** `css/theme.css` only — tokens, title cards, chrome, poster field, plate rhythm, motion CSS
 - **Pages:** plain HTML (`index.html`, `about.html`, `articles/*.html`)
+- **JS:** `js/motion.js` — optional Motion CDN fallback for panel scroll (no build)
 - **Serve:** `npm run dev` → static server on port 4173 (no bundler)
+
+## Motion (minimal)
+
+Respects `prefers-reduced-motion: reduce` (no animation).
+
+| Target | Trigger | Effect |
+| --- | --- | --- |
+| **`.title-card`** | Page load | Soft zoom + rise; series lines stagger; meta fades in after |
+| **`.article-body`** | Scroll (scrubbed) | Zoom + rise into place via CSS `animation-timeline: view()` (`entry 0%` → `entry 55%`) |
+| Fallback | Browsers without view timelines | `js/motion.js` uses Motion `scroll()` with the same transform range |
+
+Do not add heavy page transitions or per-element animation libraries beyond this.
 
 ## Site structure
 
@@ -64,7 +77,7 @@ Title ····························· 01
 | Article body prose | **Geist Sans** (`--font-body`, weight 400) |
 | Nav, kickers, bylines, rails, captions, code | **Geist Sans** (`--font-mono`, weight 500) |
 
-**TYPE TRIAL:** entire site on local Geist Sans (`assets/fonts/geist/Geist-Variable.woff2`, `@font-face` in `theme.css`). Hierarchy is weight only (`--weight-body` 400, `--weight-chrome` / `--weight-display` 500). No Google Fonts required while the trial is active.
+**TYPE TRIAL:** entire site on local Geist Sans (`assets/fonts/geist/Geist-Variable.woff2` only, `@font-face` in `theme.css`). Hierarchy is weight only (`--weight-body` 400, `--weight-chrome` / `--weight-display` 500). No Google Fonts required while the trial is active.
 
 ## Title card pattern (episode open)
 
